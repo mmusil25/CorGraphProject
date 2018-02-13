@@ -1,0 +1,4 @@
+Resources for learning TensorFlow
+
+https://www.tensorflow.org/get_started/premade_estimators
+

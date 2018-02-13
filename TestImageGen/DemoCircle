@@ -6,12 +6,13 @@ Program which uses the command Line to draw a circle
 
 @author: mark
 """
+#####Set up  ######
+
+#import modules
 from math import pi
 import cairo
 
-surface = cairo.SVGSurface("circle.svg", 200, 200)
-cr = cairo.context(surface) # An object of thee context class instantiated using 
-#the object surface as an initialization parameter.
+#Define
 
 def path_ellipse(cr, x, y, width, height, angle=0):
     """
@@ -48,6 +49,13 @@ def draw(cr, width, height):
     cr.stroke()
     cr.restore()
     
+#Create cairo surface and context objects
+surface = cairo.SVGSurface("circle.svg", 200, 200)
+cr = cairo.context(surface) # An object of the context class instantiated using 
+#the object surface as an initialization parameter.
+
+
+
 ####Begin Interactive Portion
 x = raw_input("Define the x-value of the center of the circle")
 y = raw_input("Define the y-value of the center of the circle")
