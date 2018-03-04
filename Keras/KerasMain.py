@@ -15,7 +15,7 @@
 import pandas as pds
 import datetime
 
-# Pre-processing of the dataset.
+# Pre-processing of the dataset
 
 dataframeX = pds.read_csv('KaggleV2-May-2016.csv', usecols=[
                       2,4, 7, 8, 9, 10, 11, 12, 13])
@@ -29,5 +29,7 @@ print(dataframeY.head())
 def GregorianToWeekday(Gregorian):
     for i in range dataframeX:
         for k in range(len()):
+
+
 
 
