@@ -13,26 +13,30 @@ from sklearn.neighbors import NearestNeighbors
 #  * Triangle Processing *
 #  *=====================*
 
-def buildSets():
 
 
+def buildSets(imageQuantity, inputSideLength):
+		
+	TrainingLimit, TestLimit, ValidationLimit = 400,450,500
 	ListofImages = []
 
-	for i in range(50):
+	for i in range(imageQuantity):
 		image = cv2.imread("/home/mark/Documents/CorGraphProjectGit/CorticalVision/Images/Triangle/T" + str(i) + ".PNG")
+		if np.random.uniform(0,1) < 0.25:
+			image =  cv2.blur(image,(5,5))
 	#print(image)
 	#print(image.shape)
 	#plt.imshow(image)
 	#plt.show()
-		resizedImage = cv2.resize(image, (78,78))
-		reshapedImage = np.reshape(resizedImage, (3,78,78))
+		resizedImage = cv2.resize(image, (inputSideLength,inputSideLength))
+		reshapedImage = np.reshape(resizedImage, (inputSideLength,inputSideLength,3))
 		ListofImages.append(reshapedImage)
 	TriangleImagesMaster = np.stack(ListofImages,axis=0)
 # print(TriangleImagesMaster.shape)
 
 #Triangle will be 1 in the CNN's final output
 
-	TriangleKeyMaster = np.full(50,1,dtype=int)
+	TriangleKeyMaster = np.full(imageQuantity,0,dtype=int)
 
 
 #  *===================*
@@ -40,20 +44,22 @@ def buildSets():
 #  *===================*
 	ListofImages = []
 
-	for i in range(50):
+	for i in range(imageQuantity):
 		image = cv2.imread("/home/mark/Documents/CorGraphProjectGit/CorticalVision/Images/Circle/C" + str(i) + ".PNG")
+		if np.random.uniform(0,1) < 0.25:
+			image =  cv2.blur(image,(5,5))
 	#print(image)
 	#print(image.shape)
 	#plt.imshow(image)
 	#plt.show()
-		resizedImage = cv2.resize(image, (78,78))
-		reshapedImage = np.reshape(resizedImage, (3,78,78))
+		resizedImage = cv2.resize(image, (inputSideLength,inputSideLength))
+		reshapedImage = np.reshape(resizedImage, (inputSideLength,inputSideLength,3))
 		ListofImages.append(reshapedImage)
 	CircleImagesMaster = np.stack(ListofImages,axis=0)
 
 #Circle will be 2 in the CNN's final output
 
-	CircleKeyMaster = np.full(50,2,dtype=int)
+	CircleKeyMaster = np.full(imageQuantity,1,dtype=int)
 
 #  *===================*
 #  * Square Processing *
@@ -61,20 +67,23 @@ def buildSets():
 
 	ListofImages = []
 
-	for i in range(50):
+	for i in range(imageQuantity):
 		image = cv2.imread("/home/mark/Documents/CorGraphProjectGit/CorticalVision/Images/Square/S" + str(i) + ".PNG")
+		if np.random.uniform(0,1) < 0.25:
+			image =  cv2.blur(image,(5,5))
+	
 	#print(image)
 	#print(image.shape)
 	#plt.imshow(image)
 	#plt.show()
-		resizedImage = cv2.resize(image, (78,78))
-		reshapedImage = np.reshape(resizedImage, (3,78,78))
+		resizedImage = cv2.resize(image, (inputSideLength,inputSideLength))
+		reshapedImage = np.reshape(resizedImage, (inputSideLength,inputSideLength,3))
 		ListofImages.append(reshapedImage)
 	SquareImagesMaster = np.stack(ListofImages,axis=0)
 
 #Square will be 3 in the CNN's final output
 
-	SquareKeyMaster = np.full(50,3,dtype=int)
+	SquareKeyMaster = np.full(imageQuantity,2,dtype=int)
 
 # *===================*
 # * Building the Sets *
@@ -82,42 +91,42 @@ def buildSets():
 
 # Slice the first 30 of each set to be for training
 
-	TriangleImgsTrain = TriangleImagesMaster[:30]
+	TriangleImgsTrain = TriangleImagesMaster[:TrainingLimit]
 # print(TriangleImgsTrain.shape)
-	TriangleKeyTrain = TriangleKeyMaster[:30] 
+	TriangleKeyTrain = TriangleKeyMaster[:TrainingLimit] 
 #print(TriangleKeyTrain)
 
-	CircleImgsTrain = CircleImagesMaster[:30]
-	CircleKeyTrain = CircleKeyMaster[:30]
+	CircleImgsTrain = CircleImagesMaster[:TrainingLimit]
+	CircleKeyTrain = CircleKeyMaster[:TrainingLimit]
 
-	SquareImgsTrain = SquareImagesMaster[:30]
-	SquareKeyTrain = SquareKeyMaster[:30]
+	SquareImgsTrain = SquareImagesMaster[:TrainingLimit]
+	SquareKeyTrain = SquareKeyMaster[:TrainingLimit]
 
 # Slice another 10 for testing
 
-	TriangleImgsTest = TriangleImagesMaster[30:40]
+	TriangleImgsTest = TriangleImagesMaster[TrainingLimit:TestLimit]
 #print(TriangleImgsTrain.shape)
-	TriangleKeyTest = TriangleKeyMaster[30:40] 
+	TriangleKeyTest = TriangleKeyMaster[TrainingLimit:TestLimit] 
 #print(TriangleKeyTrain)
 
-	CircleImgsTest = CircleImagesMaster[30:40]
-	CircleKeyTest = CircleKeyMaster[30:40]
+	CircleImgsTest = CircleImagesMaster[TrainingLimit:TestLimit]
+	CircleKeyTest = CircleKeyMaster[TrainingLimit:TestLimit]
 
-	SquareImgsTest = SquareImagesMaster[30:40]
-	SquareKeyTest = SquareKeyMaster[30:40]
+	SquareImgsTest = SquareImagesMaster[TrainingLimit:TestLimit]
+	SquareKeyTest = SquareKeyMaster[TrainingLimit:TestLimit]
 
 # And another 10 for validation 
 
-	TriangleImgsValid = TriangleImagesMaster[40:50]
+	TriangleImgsValid = TriangleImagesMaster[TestLimit:ValidationLimit]
 #print(TriangleImgsTrain.shape)
-	TriangleKeyValid = TriangleKeyMaster[40:50] 
+	TriangleKeyValid = TriangleKeyMaster[TestLimit:ValidationLimit] 
 #print(TriangleKeyTrain)
 
-	CircleImgsValid = CircleImagesMaster[40:50]
-	CircleKeyValid = CircleKeyMaster[40:50]
+	CircleImgsValid = CircleImagesMaster[TestLimit:ValidationLimit]
+	CircleKeyValid = CircleKeyMaster[TestLimit:ValidationLimit]
 
-	SquareImgsValid = SquareImagesMaster[40:50]
-	SquareKeyValid = SquareKeyMaster[40:50]
+	SquareImgsValid = SquareImagesMaster[TestLimit:ValidationLimit]
+	SquareKeyValid = SquareKeyMaster[TestLimit:ValidationLimit]
 
 # Build the final sets
 

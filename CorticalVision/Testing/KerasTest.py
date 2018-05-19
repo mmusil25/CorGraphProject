@@ -10,7 +10,7 @@ from keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
 
 (train_data,train_labels_one_hot),(test_data,test_labels_one_hot)=cifar10.load_data()
 
-print(train_data.shape,train_labels_one_hot.shape)
+#print(train_data.shape,train_labels_one_hot.shape)
 
 def createModel():
     input_shape = (32,32,3)
