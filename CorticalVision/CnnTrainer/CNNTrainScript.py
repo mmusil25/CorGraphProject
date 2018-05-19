@@ -1,20 +1,25 @@
+# CNN Training script
+
 # Trying out a CNN on the CIFAR10 set.
 # Mark Musil B.S.E.E. 10-May-2018
 import keras
 import numpy
 import matplotlib.pyplot as plt
+import TrainingTestValBuilder as sets
 
 from keras.models import Sequential
-from keras.datasets import cifar10
+
 from keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
 
-(train_data,train_labels_one_hot),(test_data,test_labels_one_hot)=cifar10.load_data()
+(train_data,train_labels_one_hot),(test_data,test_labels_one_hot),(valid_data,valid_labels_one_hot)= sets.buildSets()
+
 
 print(train_data.shape,train_labels_one_hot.shape)
+print(train_labels_one_hot)
 
 def createModel():
-    input_shape = (32,32,3)
-    nClasses = 10
+    input_shape = (78,78,3)
+    nClasses = 3
     model = Sequential()
     model.add(Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=input_shape))
     model.add(Conv2D(32, (3, 3), activation='relu'))

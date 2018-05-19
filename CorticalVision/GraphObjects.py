@@ -38,8 +38,8 @@ def Graph_EdgesConstruction(centers, Graph, radius):
 
 # Read image
 image = cv2.imread("TCS10.PNG")
-print(image)
-print(image.shape)
+
+
 
 # Create binary image
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
