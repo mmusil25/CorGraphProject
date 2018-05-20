@@ -6,6 +6,9 @@ import itertools
 import networkx as nx
 import keras
 import sys
+import nupic
+import os
+from nupic.algorithms.spatial_pooler import SpatialPooler
 from matplotlib import pyplot as plt
 from sklearn.neighbors import NearestNeighbors
 from keras.models import load_model
@@ -41,6 +44,7 @@ bufferCNNInput = 30
 # *==================================*
 
 for c in contours:
+	listOfAreas = []	
 	M = cv2.moments(c)
 	temp = []
 	temp.append(int(M["m10"] / M["m00"]))
@@ -48,7 +52,7 @@ for c in contours:
 	x,y,w,h = cv2.boundingRect(c)
 
 #======== Find the Area
-
+	listOfAreas.append(M["m00"])
 #======== Find Distance between the contours
 
 #== Delta C0, C1
@@ -84,9 +88,27 @@ for i in range(3):
 	print[shapeDict[max]]
 	listOfShapeTypes.append(max)
 	
-# *=========================*
-# *      Find Contours      *
-# *=========================*
+#   *=========================*
+#   *      Build The SDR      *
+#   *=========================*
+
+
+
+#   *=================================*
+#   *      Push Through SP Layers     *
+#   *=================================*
+
+#=== SP Setup
+
+
+#=== Layer 1
+
+
+#=== Save the model
+
+
+
+
 
 
 

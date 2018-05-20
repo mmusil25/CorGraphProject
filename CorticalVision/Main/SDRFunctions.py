@@ -1,5 +1,84 @@
 import numpy as np
 
+def buildSDR()
+
+	SquareIndex, CircleIndex = ShapeTypes[0],ShapeTypes[1]
+
+	# Build the Triangle's base SDR. One hot encoding used for all SDRs.
+	TriangleSDR = np.zeros(120) 
+	# Part A: Number of Sides [0 - 19]
+	TriangleSDR[2] = 1		
+	# Part B: Height [20 - 39]
+
+	# Part C: Width [40 - 59]
+	
+	# Part D: Number of Neighbors [60 - 79]
+	TriangleSDR[42] = 1
+	# Part E: Information of Neighbors [80 - 119]
+		# Neighbor 1 - Circle [80 - 99] 
+			# Part E.a: Number of Sides [80-86]
+	TriangleSDR[81] = 1	
+			# Part E.a: Height [87-94]
+
+			# Part E.a: Width [95-99]
+		# Neighbor 2 - Square [100 - 119]
+			# Part E.a: Number of Sides [100 - 106]
+	TriangleSDR[104] = 1
+			# Part E.b: Height [107 - 114]
+
+			# Part E.c: Width [114 - 119]
+
+	# Build the Circle's base SDR
+
+	CircleSDR = np.zeros(120) 
+	# Part A: Number of Sides [0 - 19]
+	CircleSDR[2] = 1		
+	# Part B: Height [20 - 39]
+
+	# Part C: Width [40 - 59]
+					
+	# Part D: Number of Neighbors [60 - 79]
+	CircleSDR[42] = 1
+	# Part E: Information of Neighbors [80 - 119]
+		# Neighbor 1 - Triangle [80 - 99] 
+			# Part E.a: Number of Sides [80-86]
+	CircleSDR[83] = 1	
+			# Part E.a: Height [87-94]
+
+			# Part E.a: Width [95-99]
+		# Neighbor 2 - Square [100 - 119]
+			# Part E.a: Number of Sides [100 - 106]
+	CircleSDR[104] = 1
+			# Part E.b: Height [107 - 114]
+
+			# Part E.c: Width [114 - 119]
+
+
+	# Build the Square's base SDR
+
+	SquareSDR = np.zeros(120) 
+	# Part A: Number of Sides [0 - 19]
+	SquareSDR[4] = 1		
+	# Part B: Height [20 - 39]
+
+	# Part C: Width [40 - 59]
+					
+	# Part D: Number of Neighbors [60 - 79]
+	SquareSDR[42] = 1
+	# Part E: Information of Neighbors [80 - 119]
+		# Neighbor 1 - Triangle [80 - 99] 
+			# Part E.a: Number of Sides [80-86]
+	SquareSDR[83] = 1	
+			# Part E.a: Height [87-94]
+
+			# Part E.a: Width [95-99]
+		# Neighbor 2 - Circle [100 - 119]
+			# Part E.a: Number of Sides [100 - 106]
+	SquareSDR[101] = 1
+			# Part E.b: Height [107 - 114]
+			# Part E.c: Width [114 - 119]
+
+
 
 def add(self, other):
     self[0] = self[0] + other[0]
