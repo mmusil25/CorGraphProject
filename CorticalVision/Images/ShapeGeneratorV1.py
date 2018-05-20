@@ -55,7 +55,7 @@ import cairo
 #     label = input("Enter the image's label") + ".PNG"
 #     break
 
-SideLength, ImageQuantity, deltaA = 312, 50, 0.35
+SideLength, ImageQuantity, deltaA = 312, 5, 0.35
 deltaX, deltaY, circleScale = 0.13, 0.1, 10
 
 for i in range(ImageQuantity):

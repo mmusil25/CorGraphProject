@@ -65,15 +65,14 @@ for i in range(ImageQuantity):
     leg = 0.15
     label = "T" + str(i) + ".PNG"
     # Generate random rgb values for the background
-    backGroundR = numpy.random.random_sample()
-    backGroundG = numpy.random.random_sample()
-    backGroundB = numpy.random.random_sample()
-
+    low,high = 0.35,0.9
+    backGroundR = numpy.random.uniform(0.0,low)
+    backGroundG = numpy.random.uniform(0.0,low)
+    backGroundB = numpy.random.uniform(0.0,low)
     # Generate rangom rgb for the shapes
-    objectR = numpy.random.random_sample()
-    objectG = numpy.random.random_sample()
-    objectB = numpy.random.random_sample()
-
+    objectR = numpy.random.uniform(high,1)
+    objectG = numpy.random.uniform(high,1)
+    objectB = numpy.random.uniform(high,1)
     mySurface = TestImageGenModule.OneImage(SideLength, SideLength, label)
     mySurface.ctx.set_source_rgb(backGroundR, backGroundG, backGroundB)
     mySurface.ctx.paint()
