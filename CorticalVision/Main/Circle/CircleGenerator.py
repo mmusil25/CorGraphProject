@@ -55,17 +55,27 @@ import cairo
 #     label = input("Enter the image's label") + ".PNG"
 #     break
 
-SideLength, ImageQuantity, deltaA = 312, 32, 0.0
-deltaX, deltaY, circleScale = 0.4, 0.2, 10
+SideLength, ImageQuantity, deltaA = 312, 500, 0.35
+deltaX, deltaY, circleScale = 0.13, 0.1, 10
 
 for i in range(ImageQuantity):
-    radius = 0.07  # Geometric shape area seeds
-    width = 0.15
+    radius = 0.19  # Geometric shape area seeds
+    width = 0.2
     height = width
     leg = 0.15
-    label = "TC" + str(i) + ".PNG"
+    label = "C" + str(i) + ".PNG"
+    # Generate random rgb values for the background
+    low,high = 0.35,0.9
+    backGroundR = numpy.random.uniform(0.0,low)
+    backGroundG = numpy.random.uniform(0.0,low)
+    backGroundB = numpy.random.uniform(0.0,low)
+    # Generate rangom rgb for the shapes
+    objectR = numpy.random.uniform(high,1)
+    objectG = numpy.random.uniform(high,1)
+    objectB = numpy.random.uniform(high,1)
+
     mySurface = TestImageGenModule.OneImage(SideLength, SideLength, label)
-    mySurface.ctx.set_source_rgb(0, 0, 0)
+    mySurface.ctx.set_source_rgb(backGroundR, backGroundG, backGroundB)
     mySurface.ctx.paint()
     # ==== Circle generation ====
     xc = 0.5  # Object center seeds
@@ -73,20 +83,24 @@ for i in range(ImageQuantity):
     xc += numpy.random.uniform(-deltaX, deltaX)
     yc += numpy.random.uniform(-deltaY, deltaY)
     radius += numpy.random.uniform(-deltaA/circleScale, deltaA/circleScale)
-    mySurface.draw_circle(xc, yc, radius, 1, 1, 1)
+    mySurface.draw_circle(xc, yc, radius, objectR, objectG, objectB)
     # ==== Rectangle generation ====
     xc = 0.5  # Object center seeds
     yc = xc
     xc += numpy.random.uniform(-deltaX, deltaX)
     yc += numpy.random.uniform(-deltaY, deltaY)
-    width += numpy.random.uniform(-deltaA, deltaA)
-    height += numpy.random.uniform(-deltaA, deltaA)
-    #mySurface.draw_rectangle(xc, yc, width, height, 1, 1, 1)
+    width += numpy.random.uniform(-deltaA/8, deltaA)
+    height = width
+    # height += numpy.random.uniform(-deltaA, deltaA)
+    # mySurface.draw_rectangle(xc, yc, width, height, objectR, objectG, objectB)
     # ==== Triangle generation ====
     xc = 0.5 # Object center seeds
     yc = xc
     xc += numpy.random.uniform(-deltaX, deltaX)
     yc += numpy.random.uniform(-deltaY, deltaY)
-    leg += numpy.random.uniform(-deltaA, deltaA)
-   # mySurface.draw_triangle(xc, yc, leg, 1, 1, 1)
+    leg += numpy.random.uniform(-deltaA/8, deltaA)
+    #mySurface.draw_triangle(xc, yc, leg, objectR, objectG, objectB)
     mySurface.write_out_image(label)
+
+
+

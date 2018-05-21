@@ -7,20 +7,28 @@ from nupic.encoders.scalar import ScalarEncoder
 def buildSDR(arrayOfShapeTypes,arrayOfDistances,arrayOfAreas,numCentroids):
 
 #Scalar Encoder for the area
-	areaEncoder = ScalarEncoder(5, 1e3, 3e3, periodic=False, n=80, radius=0, resolution=0, name=None, verbosity=0, clipInput=False, forced=True)
+	areaEncoder = ScalarEncoder(5, 1e3, 3.8e3, periodic=False, n=80, radius=0, resolution=0, name=None, verbosity=0, clipInput=False, forced=True)
 
 #Scalar encoder for the distances between centroids
 
-	distanceEncoder = ScalarEncoder(5, 30, 220, periodic=False, n=80, radius=0, resolution=0, name=None, verbosity=0, clipInput=False, forced=True)
+	distanceEncoder = ScalarEncoder(5, 30, 240, periodic=False, n=80, radius=0, resolution=0, name=None, verbosity=0, clipInput=False, forced=True)
 
-	distanceBits0 = np.zeros(distanceEncoder.getWidth())
-	distanceEncoder.encodeIntoArray(arrayOfDistances[0],distanceBits0)
 
-	distanceBits1 = np.zeros(distanceEncoder.getWidth())
-	distanceEncoder.encodeIntoArray(arrayOfDistances[1],distanceBits1)
+	if numCentroids ==3:
 
-	distanceBits2 = np.zeros(distanceEncoder.getWidth())
-	distanceEncoder.encodeIntoArray(arrayOfDistances[2],distanceBits2)
+		distanceBits0 = np.zeros(distanceEncoder.getWidth())
+		distanceEncoder.encodeIntoArray(arrayOfDistances[0],distanceBits0)
+
+		distanceBits1 = np.zeros(distanceEncoder.getWidth())
+		distanceEncoder.encodeIntoArray(arrayOfDistances[1],distanceBits1)
+
+		distanceBits2 = np.zeros(distanceEncoder.getWidth())
+		distanceEncoder.encodeIntoArray(arrayOfDistances[2],distanceBits2)
+
+	if numCentroids ==2:
+
+		distanceBits0 = np.zeros(distanceEncoder.getWidth())
+		distanceEncoder.encodeIntoArray(arrayOfDistances[0],distanceBits0)
 
 # Build the Triangle's base SDR. One hot encoding used for all SDRs.
 	TriangleSDR = np.zeros(10) 
@@ -60,21 +68,31 @@ def buildSDR(arrayOfShapeTypes,arrayOfDistances,arrayOfAreas,numCentroids):
 			tempSDR = np.concatenate(( CircleSDR, areaBits))
 		elif arrayOfShapeTypes[i] == 2: #Its a Square
 			tempSDR = np.concatenate(( SquareSDR, areaBits))
-
-		if i == 0: #Its the first item
-			tempSDR = np.concatenate((tempSDR,distanceBits0,distanceBits2))
-		elif i == 1: #Its the second
-			tempSDR = np.concatenate((tempSDR,distanceBits0,distanceBits1))
-		elif i == 2: #Its the third
-			tempSDR = np.concatenate((tempSDR,distanceBits1,distanceBits2))
-	#	print(tempSDR)
-		arrayOfSDRs = np.append(arrayOfSDRs,tempSDR)
-		#print(tempSDR.shape)
 		
-		if numCentroids == 2:
-			arrayOfSDRs = np.append(arrayOfSDRs,np.zeros(250))
-		if numCentroids == 1:
-			arrayOfSDRs = np.append(arrayOfSDRs,np.zeros(500))
+		if numCentroids == 3:
+			if i == 0: #Its the first item
+				tempSDR = np.concatenate((tempSDR,distanceBits0,distanceBits2))
+			elif i == 1: #Its the second
+				tempSDR = np.concatenate((tempSDR,distanceBits0,distanceBits1))
+			elif i == 2: #Its the third
+				tempSDR = np.concatenate((tempSDR,distanceBits1,distanceBits2))
+
+		elif numCentroids == 2:
+			if i == 0: #Its the first item
+				tempSDR = np.concatenate((tempSDR,distanceBits0,np.zeros(80)))
+			elif i == 1: #Its the second
+				tempSDR = np.concatenate((tempSDR,distanceBits0,np.zeros(80)))
+		elif numCentroids == 1:
+			tempSDR = np.concatenate((tempSDR,np.zeros(160)))
+		
+		
+		arrayOfSDRs = np.append(arrayOfSDRs,tempSDR)
+
+		
+	if numCentroids == 2:
+		arrayOfSDRs = np.append(arrayOfSDRs,np.zeros(250))
+	if numCentroids == 1:
+	 	arrayOfSDRs = np.append(arrayOfSDRs,np.zeros(500))
 # Concatenate all three SDRs
 	#print(arrayOfSDRs)
 	imageSDR = arrayOfSDRs
