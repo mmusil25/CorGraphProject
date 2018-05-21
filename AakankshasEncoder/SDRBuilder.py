@@ -10,7 +10,6 @@ import csv
 from matplotlib import pyplot as plt
 from sklearn.neighbors import NearestNeighbors
 
-
 def add(self, other):
     self[0] = self[0] + other[0]
     self[1] = self[1] + other[1]
@@ -50,7 +49,7 @@ for m in range(20):
 	thresh = cv2.threshold(blurred, 60, 255, cv2.THRESH_BINARY)[1]
 
 	# Find contours
-	(_, contours, _) = cv2.findContours(thresh, cv2.RETR_EXTERNAL, 				cv2.CHAIN_APPROX_SIMPLE)
+	(_, contours, _) = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
 	print("Found %d components." % len(contours))
 	# print(contours)
@@ -69,7 +68,7 @@ for m in range(20):
 	# Part B: Height [20 - 39]
 
 	# Part C: Width [40 - 59]
-					
+	
 	# Part D: Number of Neighbors [60 - 79]
 	TriangleSDR[42] = 1
 	# Part E: Information of Neighbors [80 - 119]
@@ -134,7 +133,6 @@ for m in range(20):
 			# Part E.a: Number of Sides [100 - 106]
 	SquareSDR[101] = 1
 			# Part E.b: Height [107 - 114]
-
 			# Part E.c: Width [114 - 119]
 	print(np.nonzero(TriangleSDR))
 	print(np.nonzero(SquareSDR))

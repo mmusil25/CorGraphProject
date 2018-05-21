@@ -1,84 +1,85 @@
 import numpy as np
+import nupic
+from nupic.algorithms.spatial_pooler import SpatialPooler
+from nupic.encoders.scalar import ScalarEncoder
 
-def buildSDR()
 
-	SquareIndex, CircleIndex = ShapeTypes[0],ShapeTypes[1]
+def buildSDR(arrayOfShapeTypes,arrayOfDistances,arrayOfAreas,numCentroids):
 
-	# Build the Triangle's base SDR. One hot encoding used for all SDRs.
-	TriangleSDR = np.zeros(120) 
-	# Part A: Number of Sides [0 - 19]
+#Scalar Encoder for the area
+	areaEncoder = ScalarEncoder(5, 1e3, 3e3, periodic=False, n=80, radius=0, resolution=0, name=None, verbosity=0, clipInput=False, forced=True)
+
+#Scalar encoder for the distances between centroids
+
+	distanceEncoder = ScalarEncoder(5, 30, 220, periodic=False, n=80, radius=0, resolution=0, name=None, verbosity=0, clipInput=False, forced=True)
+
+	distanceBits0 = np.zeros(distanceEncoder.getWidth())
+	distanceEncoder.encodeIntoArray(arrayOfDistances[0],distanceBits0)
+
+	distanceBits1 = np.zeros(distanceEncoder.getWidth())
+	distanceEncoder.encodeIntoArray(arrayOfDistances[1],distanceBits1)
+
+	distanceBits2 = np.zeros(distanceEncoder.getWidth())
+	distanceEncoder.encodeIntoArray(arrayOfDistances[2],distanceBits2)
+
+# Build the Triangle's base SDR. One hot encoding used for all SDRs.
+	TriangleSDR = np.zeros(10) 
+	# Part A: Number of Sides [0 - 4]
 	TriangleSDR[2] = 1		
-	# Part B: Height [20 - 39]
+	# Part B: Number of Neighbors [5 - 9]
+	TriangleSDR[7] = 1
 
-	# Part C: Width [40 - 59]
-	
-	# Part D: Number of Neighbors [60 - 79]
-	TriangleSDR[42] = 1
-	# Part E: Information of Neighbors [80 - 119]
-		# Neighbor 1 - Circle [80 - 99] 
-			# Part E.a: Number of Sides [80-86]
-	TriangleSDR[81] = 1	
-			# Part E.a: Height [87-94]
+# Build the Circle's base SDR
+	CircleSDR = np.zeros(10) 
+	# Part A: Number of Sides [0 - 4]
+	CircleSDR[0] = 1	
+	# Part B: Number of Neighbors [5 - 9]
+	CircleSDR[7] = 1
 
-			# Part E.a: Width [95-99]
-		# Neighbor 2 - Square [100 - 119]
-			# Part E.a: Number of Sides [100 - 106]
-	TriangleSDR[104] = 1
-			# Part E.b: Height [107 - 114]
-
-			# Part E.c: Width [114 - 119]
-
-	# Build the Circle's base SDR
-
-	CircleSDR = np.zeros(120) 
-	# Part A: Number of Sides [0 - 19]
-	CircleSDR[2] = 1		
-	# Part B: Height [20 - 39]
-
-	# Part C: Width [40 - 59]
-					
-	# Part D: Number of Neighbors [60 - 79]
-	CircleSDR[42] = 1
-	# Part E: Information of Neighbors [80 - 119]
-		# Neighbor 1 - Triangle [80 - 99] 
-			# Part E.a: Number of Sides [80-86]
-	CircleSDR[83] = 1	
-			# Part E.a: Height [87-94]
-
-			# Part E.a: Width [95-99]
-		# Neighbor 2 - Square [100 - 119]
-			# Part E.a: Number of Sides [100 - 106]
-	CircleSDR[104] = 1
-			# Part E.b: Height [107 - 114]
-
-			# Part E.c: Width [114 - 119]
+# Build the Square's base SDR
+	SquareSDR = np.zeros(10) 
+	# Part A: Number of Sides [0 - 4]
+	SquareSDR[3] = 1	
+	# Part B: Number of Neighbors [5 - 9]
+	SquareSDR[7] = 1	
 
 
-	# Build the Square's base SDR
 
-	SquareSDR = np.zeros(120) 
-	# Part A: Number of Sides [0 - 19]
-	SquareSDR[4] = 1		
-	# Part B: Height [20 - 39]
+	arrayOfSDRs = np.array([])
+	for i in range(numCentroids):
 
-	# Part C: Width [40 - 59]
-					
-	# Part D: Number of Neighbors [60 - 79]
-	SquareSDR[42] = 1
-	# Part E: Information of Neighbors [80 - 119]
-		# Neighbor 1 - Triangle [80 - 99] 
-			# Part E.a: Number of Sides [80-86]
-	SquareSDR[83] = 1	
-			# Part E.a: Height [87-94]
+# Encode the area
+		areaBits = np.zeros(areaEncoder.getWidth())
+		areaEncoder.encodeIntoArray(arrayOfAreas[i],areaBits)
+		
+		# Figure out the shape type via the CNN output then us an		
+		# if, elseif tree to decide which SDR to concatenate
+		if arrayOfShapeTypes[i] == 0: #Its a Triangle
+			tempSDR = np.concatenate(( TriangleSDR, areaBits))
+		elif arrayOfShapeTypes[i] == 1: #Its a Circle
+			tempSDR = np.concatenate(( CircleSDR, areaBits))
+		elif arrayOfShapeTypes[i] == 2: #Its a Square
+			tempSDR = np.concatenate(( SquareSDR, areaBits))
 
-			# Part E.a: Width [95-99]
-		# Neighbor 2 - Circle [100 - 119]
-			# Part E.a: Number of Sides [100 - 106]
-	SquareSDR[101] = 1
-			# Part E.b: Height [107 - 114]
-			# Part E.c: Width [114 - 119]
+		if i == 0: #Its the first item
+			tempSDR = np.concatenate((tempSDR,distanceBits0,distanceBits2))
+		elif i == 1: #Its the second
+			tempSDR = np.concatenate((tempSDR,distanceBits0,distanceBits1))
+		elif i == 2: #Its the third
+			tempSDR = np.concatenate((tempSDR,distanceBits1,distanceBits2))
+	#	print(tempSDR)
+		arrayOfSDRs = np.append(arrayOfSDRs,tempSDR)
+		#print(tempSDR.shape)
+		
+		if numCentroids == 2:
+			arrayOfSDRs = np.append(arrayOfSDRs,np.zeros(250))
+		if numCentroids == 1:
+			arrayOfSDRs = np.append(arrayOfSDRs,np.zeros(500))
+# Concatenate all three SDRs
+	#print(arrayOfSDRs)
+	imageSDR = arrayOfSDRs
 
-
+	return imageSDR
 
 def add(self, other):
     self[0] = self[0] + other[0]

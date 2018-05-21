@@ -15,7 +15,7 @@ from nupic.algorithms.spatial_pooler import SpatialPooler
 
 # Section 1: Converting indice based SDRs into binary vectors.
 
-EncodingWidth, ActiveBits, SpatialPoolerWidth = 360, 122, 180
+EncodingWidth, ActiveBits, SpatialPoolerWidth = 590, 122, 180
 
 # Build the Circle's base SDR
 
