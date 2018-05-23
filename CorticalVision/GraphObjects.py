@@ -133,5 +133,7 @@ O = Graph_EdgesConstruction(centers, O, 260.0)
 
 drawGraph(G, 'blue', 'black')
 drawGraph(O, 'red', 'white')
+
 plt.imshow(image)
+plt.savefig('TCS10Augmented',dpi=1000,bbox_inches='tight',pad_inches=0.1)
 plt.show()

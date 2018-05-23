@@ -27,7 +27,7 @@ for i in range(numInputs):
 # *      Read image       *
 # *=======================*
 	image = cv2.imread("/home/mark/Documents/CorGraphProjectGit/CorticalVision/Main/TriangleSquareCircle/TCS" + str(i) + ".PNG")
-
+	#image = cv2.imread("/home/mark/Documents/CorGraphProjectGit/CorticalVision/Main/TriangleSquareCircle/TCS10.PNG")
 	# Create binary image
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 	blurred = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -60,6 +60,7 @@ for i in range(numInputs):
 
 #======== Find the Area
 		listOfAreas.append(M["m00"])
+		print('Area of the object:', M["m00"])
 	
 #======== Cut out the images and prepare them for the CNN
 
@@ -89,21 +90,25 @@ for i in range(numInputs):
 		max = np.argmax(shapeTypes[i])
 		#print[shapeDict[max],listOfAreas[i]]
 		listOfShapeTypes.append(max)
+		print['Object ' + str(i) + ' is a',shapeDict[max]]
 	arrayOfShapeTypes = np.asarray(listOfShapeTypes)
 
 #======== Find Distance between the contours
 
 	#== Delta C0, C1
 	deltax,deltay = abs(centroids[0][0] - centroids[1][0]), abs(centroids[0][1] - centroids[1][1])
-	delta01 = (deltax**2 + deltay**2)**0.5
+	delta01 = (deltax**2 + deltay**2)**0.5	
+	print('Distance from center 0 to 1: ', delta01)
 
 	#== Delta C1, C2
 	deltax,deltay = abs(centroids[2][0] - centroids[1][0]), abs(centroids[2][1] - centroids[1][1])
 	delta12 = (deltax**2 + deltay**2)**0.5
+	print('Distance from center 1 to 2: ', delta12)
 
 	#== Delta C2, C0
 	deltax,deltay = abs(centroids[0][0] - centroids[2][0]), abs(centroids[0][1] - centroids[2][1])
 	delta20 = (deltax**2 + deltay**2)**0.5
+	print('Distance from center 0 to 2: ', delta20)
 
 	arrayOfDistances = np.array([delta01,delta12,delta20]) 
 
@@ -255,7 +260,7 @@ activeColumns = np.zeros(SpatialPoolerWidth3)
 #Push all image SDRs through the SP layer 2
 SPLayer3Out = np.array([])
 tempList = []
-print('L3 TriSqrCrcl Out: ')
+print('Layer 3 TriangleSquareCircle Out: ')
 for i in range(numInputs):
 	sp.compute(SPLayer2Out[i,:],True,activeColumns)
 	tempList.append(activeColumns)
@@ -512,7 +517,7 @@ activeColumns = np.zeros(SpatialPoolerWidth3)
 #Push all image SDRs through the SP layer 2
 SPLayer3Out = np.array([])
 tempList = []
-print('L3 CrclSqr Out: ')
+print('Layer 3 CircleSquare Out: ')
 for i in range(numInputs):
 	sp.compute(SPLayer2Out[i,:],True,activeColumns)
 	tempList.append(activeColumns)
@@ -763,7 +768,7 @@ activeColumns = np.zeros(SpatialPoolerWidth3)
 #Push all image SDRs through the SP layer 2
 SPLayer3Out = np.array([])
 tempList = []
-print('L3 Crcl Out: ')
+print('Layer 3 Circle Out: ')
 for i in range(numInputs):
 	sp.compute(SPLayer2Out[i,:],True,activeColumns)
 	tempList.append(activeColumns)
