@@ -20,7 +20,7 @@ inputSideLength = 32
 t = datetime.time(1, 2, 3,4)
 d = datetime.date.today()
 #dt = datetime.datetime.combine(d, t)
-dt = '5'
+dt = '6'
 
 (train_data,train_labels_one_hot),(test_data,test_labels_one_hot),(valid_data,valid_labels_one_hot)= sets.buildSets(500,inputSideLength)
 
@@ -60,6 +60,7 @@ def createModel(inputSideLength):
 model1 = createModel(inputSideLength)
 batch_size = 70
 epochs = 20
+model1.summary()
 model1.compile(optimizer='rmsprop', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
  
 history = model1.fit(train_data, train_labels_one_hot, batch_size=batch_size, epochs=epochs, verbose=1, 
