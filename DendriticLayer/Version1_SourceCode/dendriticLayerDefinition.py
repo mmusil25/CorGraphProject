@@ -33,7 +33,7 @@ from ..utils.generic_utils import has_arg
 from ..utils import conv_utils
 from ..legacy import interfaces
 
-class DendriticLayer(Layer):
+class dendriticLayer(Layer):
     """Just your regular densely-connected NN layer.
 
     `Dense` implements the operation:
@@ -168,7 +168,8 @@ class DendriticLayer(Layer):
         else:
             self.bias = None
         self.input_spec = InputSpec(min_ndim=2, axes={-1: input_dim})
-        self.built = True
+       # self.built = True
+        super(dendriticLayer, self).build(input_shape)
     
     def dendriticBoundary(self, x): # Here x is a single valued real number
         numerator =    (1 + exp(self.alpha_L*(x - self.b_L)))**(self.alpha_L**(-1))
