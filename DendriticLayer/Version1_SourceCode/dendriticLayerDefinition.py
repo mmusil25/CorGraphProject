@@ -179,8 +179,8 @@ class DendriticLayer(Layer):
         return (1 + exp(np.sum(X))**(-1)
 
     def dendriticTransfer(self, X): # Here X is also vector
-        arg1 =  self.c_d * multiVariateSigmoid( np.multiply(self.a_d, np.subtract[X, self.b_d]) + np.sum(X) )
-        return dendriticBoundary(arg1)
+        arg1 =  self.c_d * self.multiVariateSigmoid( np.multiply(self.a_d, np.subtract[X, self.b_d]) + np.sum(X) )
+        return self.dendriticBoundary(arg1)
         
     def call(self, inputs):
         for n in range(self.units):
