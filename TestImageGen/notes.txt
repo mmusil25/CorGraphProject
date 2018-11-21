@@ -1,4 +1,0 @@
-Notes for TestImageGen
-
-1. SVG file type - scalable vector graphics file type is an XML based vector image format for 2d graphics with support for interactivity and 
-animation, Open standard developed by W3C. 

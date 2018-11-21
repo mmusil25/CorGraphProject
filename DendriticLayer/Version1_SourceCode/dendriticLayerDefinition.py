@@ -141,18 +141,18 @@ class DendriticLayer(Layer):
         self.b_L = 1
         self.a_d = 1
         self.c_d = self.add_weight(shape = 1,
-                                   initializer = initializer=self.bias_initializer,
+                                   initializer = self.bias_initializer,
                                    name='c_d',
                                    regularizer=self.bias_regularizer,
                                    constraint=self.bias_constraint)   
         self.b_d = self.add_weight(shape = 1,
-                                   initializer = initializer=self.bias_initializer,
+                                   initializer = self.bias_initializer,
                                    name='b_d',
                                    regularizer=self.bias_regularizer,
                                    constraint=self.bias_constraint)       
-
         self.dendriteInput = np.ndarray(shape= dendrites)
         self.dendriteActivations = np.ndarray(shape = dendrites)
+        self.preoutput = 0
         if self.use_bias:
             self.dendriteBias =  self.add_weight(shape=(self.units * self.dendrites,),
                                         initializer=self.bias_initializer,
@@ -170,29 +170,30 @@ class DendriticLayer(Layer):
         self.input_spec = InputSpec(min_ndim=2, axes={-1: input_dim})
         self.built = True
     
-    def dendriticBoundary(self, x):
+    def dendriticBoundary(self, x): # Here x is a single valued real number
         numerator =    (1 + exp(self.alpha_L*(x - self.b_L)))**(self.alpha_L**(-1))
         denominator =  (1 + exp(self.alpha_U*(x - self.b_U)))**(self.alpha_U**(-1))
-        return (numerator/denominator) + self.b_L
+        return log(numerator/denominator) + self.b_L
     
-    def multiVariateSigmoid(x): # Please make x a numpy array thanks bye
-        return (1 + exp(np.sum(x))**(-1)
+    def multiVariateSigmoid(X): # Here X is a vector
+        return (1 + exp(np.sum(X))**(-1)
 
-    def dendriticTransfer(self, x):
-        arg1 =  self.c_d * multiVariateSigmoid(np.multiply(self.a_d, np.subtract[x, self.b_d]))
-       
-        return dendriticBoundary(self.c_d * multiVariateSigmoid(self.a_d  ))
+    def dendriticTransfer(self, X): # Here X is also vector
+        arg1 =  self.c_d * multiVariateSigmoid( np.multiply(self.a_d, np.subtract[X, self.b_d]) + np.sum(X) )
+        return dendriticBoundary(arg1)
         
     def call(self, inputs):
         for n in range(self.units):
             for d in range(self.dendrites):
                 self.dendriteInput[d] = K.dot(inputs, self.kernel[d])
-                self.dendriteActivations = 
                 if self.use_bias:
-                    output = K.bias_add(output, self.bias, data_format='channels_last')
+                   self.dendriteInput[d] = K.bias_add(self.dendriteInput[d], self.dendriteBias, data_format='channels_last')
+                self.dendriteActivations[d] = dendriticTransfer(self.dendriteInput[d]) 
+                self.preoutput = np.sum(self.dendriteActivations)
+                if self.use_bias:
+                    output = K.bias_add(self.preoutput, self.bias, data_format='channels_last')
                 if self.activation is not None:
                     output = self.activation(output)
-        
         return output
 
     def compute_output_shape(self, input_shape):
