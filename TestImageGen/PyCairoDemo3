@@ -1,0 +1,31 @@
+"""
+
+Basic cairo code to draw a circle
+
+January 28, 2018 
+
+"""
+
+import math as pi
+import cairo
+
+WIDTH, HEIGHT = 256,256
+
+surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
+ctx = cairo.Context (surface)
+
+ctx.scale (WIDTH, HEIGHT) #Normalizing the canvas
+ctx.translate(0.1,0.1) #Changing current transform matrix
+
+ctx.move_to(0,0) #Set the brush starting
+ctx.arc(0.1,0.1,0.1,0, pi*2)
+ctx.clos_path()
+
+ctx.set_source_rgb(0.3,0.2,0.5)
+ctx.stroke()
+
+surface.write_to_png ("MyCircle.png")
+
+
+
+

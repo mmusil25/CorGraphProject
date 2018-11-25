@@ -20,6 +20,7 @@ from __future__ import print_function
 
 import numpy as np
 from math import exp, log 
+
 # import copy
 # import types as python_types
 # import warnings
@@ -43,6 +44,7 @@ from keras.engine.base_layer import Layer
 
 
 class Dendritic(Layer):
+
     """Just your regular densely-connected NN layer.
 
     `Dense` implements the operation:
@@ -177,7 +179,8 @@ class Dendritic(Layer):
         else:
             self.bias = None
         self.input_spec = InputSpec(min_ndim=2, axes={-1: input_dim})
-        self.built = True
+       # self.built = True
+        super(dendriticLayer, self).build(input_shape)
     
     def dendriticBoundary(self, x): # Here x is a single valued real number
         numerator =    (1 + exp(self.alpha_L*(x - self.b_L)))**(self.alpha_L**(-1))
