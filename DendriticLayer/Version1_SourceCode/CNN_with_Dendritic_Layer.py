@@ -10,7 +10,7 @@ Description:
 
 This is novel network used for the dendritic layer experiments.
 In this CNN The final dense layer is replaced with the
-novel dendritically inspired layer. The file "CNN_Control_Sample.py" contains the
+novel dendritically inspired layer. The file "CNN_Control.py" contains the
 unmodified CNN. This network is used for MNIST digit recognition based off the design
 at https://towardsdatascience.com/a-simple-2d-cnn-for-mnist-digit-recognition-a998dbc1e79a
 
@@ -25,7 +25,7 @@ from keras import backend as k
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import DendriticLayer
+from DendriticLayer_v1_1 import Dendritic
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
 
@@ -68,7 +68,7 @@ num_category = 10
 
 # Convert class vectors to binary class matrices
 y_train = keras.utils.to_categorical(y_train, num_category)
-y_test  = keras.utils.to_categorical(y_test, num_category)
+y_test = keras.utils.to_categorical(y_test, num_category)
 y_train[0]
 
 # Model Building
@@ -77,7 +77,7 @@ model = Sequential()
 # 32 Convolution filters used each of size 3x3
 model.add(Conv2D (32, kernel_size=(3, 3),
                   activation='relu',
-                  input_shape= input_shape))
+                  input_shape=input_shape))
 # 64 Convolution filters used each of size 3x3
 model.add(Conv2D(64, (3, 3), activation='relu'))
 # Choose the best features via pooling
@@ -87,8 +87,7 @@ model.add(Dropout(0.25))
 # Flatten because we only care about classification
 model.add(Flatten())
 # ======= Novel Dendritic layer insertion
-
-model.add(DendriticLayer(128, activation='relu'))
+model.add(Dendritic(128, 4, activation='relu'))
 
 # ========================
 model.add(Dropout(0.5))

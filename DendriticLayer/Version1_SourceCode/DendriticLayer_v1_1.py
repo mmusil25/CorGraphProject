@@ -12,14 +12,20 @@ For a complete definition and explanation of the layer see the document
 "HonorsThesisProspectus.pdf" on my github in the Dendritic Layer folder
 of the CorGraph Project repository.
 
-""" 
+CHANGE LOG:
+
+Version 1.1 is the original, non-working version of the algorithm.
+
+
+"""
+
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
 import numpy as np
-from math import exp, log 
+from math import exp, log
 
 # import copy
 # import types as python_types
@@ -35,6 +41,8 @@ from keras import regularizers
 from keras import constraints
 from keras.engine.base_layer import InputSpec
 from keras.engine.base_layer import Layer
+
+
 # from keras.utils.generic_utils import func_dump
 # from keras.utils.generic_utils import func_load
 # from keras.utils.generic_utils import deserialize_keras_object
@@ -42,9 +50,11 @@ from keras.engine.base_layer import Layer
 # from keras.utils import conv_utils
 # from keras.legacy import interfaces
 
+def multi_variate_sigmoid(x):  # Here x is a vector
+    return (1 + exp(np.sum(x))) ** (-1)
+
 
 class Dendritic(Layer):
-
     """Just your regular densely-connected NN layer.
 
     `Dense` implements the operation:
@@ -108,8 +118,8 @@ class Dendritic(Layer):
         the output would have shape `(batch_size, units)`.
     """
 
-    #@interfaces.legacy_dense_support
-    def __init__(self, units, dendrites, 
+    # @interfaces.legacy_dense_support
+    def __init__(self, units, dendrites,
                  activation=None,
                  use_bias=True,
                  kernel_initializer='glorot_uniform',
@@ -140,37 +150,41 @@ class Dendritic(Layer):
     def build(self, input_shape):
         assert len(input_shape) >= 2
         input_dim = input_shape[-1]
-        
-        self.kernel = self.add_weight(shape=(self.dendrites ,input_dim, self.units),
+
+        self.kernel = self.add_weight(shape=(self.dendrites, input_dim, self.units),
                                       initializer=self.kernel_initializer,
                                       name='kernel',
                                       regularizer=self.kernel_regularizer,
                                       constraint=self.kernel_constraint)
         self.alpha_L = 0.5
         self.alpha_U = 0.5
-        self.b_U = 0        # Might make these trainable
-        self.b_L = 1        # Might make these trainable
+        self.b_U = 0  # Might make these trainable
+        self.b_L = 1  # Might make these trainable
         self.a_d = 1
-        self.c_d = self.add_weight(shape = 1,
-                                   initializer = self.bias_initializer,
-                                   name='c_d',
-                                   regularizer=self.bias_regularizer,
-                                   constraint=self.bias_constraint)   
-        self.b_d = self.add_weight(shape = 1,
-                                   initializer = self.bias_initializer,
-                                   name='b_d',
-                                   regularizer=self.bias_regularizer,
-                                   constraint=self.bias_constraint)       
-        self.dendriteInput = np.ndarray(shape= self.dendrites)
-        self.dendriteActivations = np.ndarray(shape = self.dendrites)
+
+        self.c_d = 0.5
+        self.b_d = 0.5
+
+        # self.b_d = self.add_weight(shape = 1,
+        #                            initializer = self.bias_initializer,
+        #                            name='b_d',
+        #                            regularizer=self.bias_regularizer,
+        #                            constraint=self.bias_constraint)
+        # self.c_d = self.add_weight(shape = 1,
+        #                            initializer = self.bias_initializer,
+        #                            name='c_d',
+        #                            regularizer=self.bias_regularizer,
+        #                            constraint=self.bias_constraint)
+        self.dendriteInput = np.zeros((self.dendrites, self.units))
+        self.dendriteActivations = np.zeros(self.dendrites)
         self.preoutput = 0
         if self.use_bias:
-            self.dendriteBias =  self.add_weight(shape=(self.units * self.dendrites,),
-                                        initializer=self.bias_initializer,
-                                        name='bias',
-                                        regularizer=self.bias_regularizer,
-                                        constraint=self.bias_constraint)
-    
+            self.dendriteBias = self.add_weight(shape=(self.units * self.dendrites,),
+                                                initializer=self.bias_initializer,
+                                                name='bias',
+                                                regularizer=self.bias_regularizer,
+                                                constraint=self.bias_constraint)
+
             self.bias = self.add_weight(shape=(self.units,),
                                         initializer=self.bias_initializer,
                                         name='bias',
@@ -179,31 +193,29 @@ class Dendritic(Layer):
         else:
             self.bias = None
         self.input_spec = InputSpec(min_ndim=2, axes={-1: input_dim})
-       # self.built = True
-        super(dendriticLayer, self).build(input_shape)
-    
-    def dendriticBoundary(self, x): # Here x is a single valued real number
-        numerator =    (1 + exp(self.alpha_L*(x - self.b_L)))**(self.alpha_L**(-1))
-        denominator =  (1 + exp(self.alpha_U*(x - self.b_U)))**(self.alpha_U**(-1))
-        return log(numerator/denominator) + self.b_L
-    
-    def multiVariateSigmoid(X): # Here X is a vector
-        return (1 + exp(np.sum(X)))**(-1)
+        #  self.built = True
+        super(Dendritic, self).build(input_shape)
 
-    def dendriticTransfer(self, X): # Here X is also vector
-        arg1 =  self.c_d * self.multiVariateSigmoid( np.multiply(self.a_d, np.subtract[X, self.b_d]) + np.sum(X) )
-        return self.dendriticBoundary(arg1)
-        
-    def call(self, inputs):   # Layer logic
+    def dendritic_boundary(self, x):  # Here x is a single valued real number
+        numerator = (1 + exp(self.alpha_L * (x - self.b_L))) ** (self.alpha_L ** (-1))
+        denominator = (1 + exp(self.alpha_U * (x - self.b_U))) ** (self.alpha_U ** (-1))
+        return log(numerator / denominator) + self.b_L
+
+    def dendritic_transfer(self, x):  # Here x is also vector
+        arg1 = self.c_d * multi_variate_sigmoid(np.multiply(self.a_d, np.subtract(x, self.b_d)) + np.sum(x))
+        return self.dendritic_boundary(arg1)
+
+    def call(self, inputs):  # Layer logic
         for n in range(self.units):
             for d in range(self.dendrites):
                 self.dendriteInput[d] = K.dot(inputs, self.kernel[d])
                 if self.use_bias:
-                   self.dendriteInput[d] = K.bias_add(self.dendriteInput[d], self.dendriteBias, data_format='channels_last')
-                self.dendriteActivations[d] = self.dendriticTransfer(self.dendriteInput[d])
-                self.preoutput = np.sum(self.dendriteActivations)
+                    self.dendriteInput[d, :] = K.bias_add(self.dendriteInput[d, :], self.dendriteBias,
+                                                          data_format='channels_last')
+                self.dendriteActivations[d] = self.dendritic_transfer(self.dendriteInput[d])
+                preoutput = np.sum(self.dendriteActivations)
                 if self.use_bias:
-                    output = K.bias_add(self.preoutput, self.bias, data_format='channels_last')
+                    output = K.bias_add(preoutput, self.bias, data_format='channels_last')
                 if self.activation is not None:
                     output = self.activation(output)
         return output
@@ -230,6 +242,3 @@ class Dendritic(Layer):
         }
         base_config = super(Dendritic, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
-
-
-
