@@ -92,7 +92,7 @@ class Dendritic(Layer):
         kernel_initializer: Initializer for the `kernel` weights matrix
             (see [initializers](../initializers.md)).
         bias_initializer: Initializer for the bias vector
-            (see [initializers](../initializers.md)).
+b            (see [initializers](../initializers.md)).
         kernel_regularizer: Regularizer function applied to
             the `kernel` weights matrix
             (see [regularizer](../regularizers.md)).
@@ -149,9 +149,9 @@ class Dendritic(Layer):
 
     def build(self, input_shape):
         assert len(input_shape) >= 2
-        input_dim = input_shape[-1]
+        self.input_dim = input_shape[-1]
 
-        self.kernel = self.add_weight(shape=(self.dendrites, input_dim, self.units),
+        self.kernel = self.add_weight(shape=(self.dendrites, self.input_dim, self.units),
                                       initializer=self.kernel_initializer,
                                       name='kernel',
                                       regularizer=self.kernel_regularizer,
@@ -192,8 +192,8 @@ class Dendritic(Layer):
                                         constraint=self.bias_constraint)
         else:
             self.bias = None
-        self.input_spec = InputSpec(min_ndim=2, axes={-1: input_dim})
-        #  self.built = True
+        self.input_spec = InputSpec(min_ndim=2, axes={-1: self.input_dim})
+        #  self.built = Truef
         super(Dendritic, self).build(input_shape)
 
     def dendritic_boundary(self, x):  # Here x is a single valued real number

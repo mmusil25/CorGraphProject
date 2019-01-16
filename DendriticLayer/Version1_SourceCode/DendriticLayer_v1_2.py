@@ -176,7 +176,8 @@ class Dendritic(Layer):
         #                            name='c_d',
         #                            regularizer=self.bias_regularizer,
         #                            constraint=self.bias_constraint)
-        self.dendriteInput = np.zeros((self.dendrites, hself.units))
+        #self.dendriteInput = np.zeros((self.dendrites, hself.units))
+        self.dendriteInput = np.zeros((self.dendrites, self.units))
         self.dendriteActivations = np.zeros(self.dendrites)
         self.preoutput = 0
         if self.use_bias:
@@ -207,19 +208,30 @@ class Dendritic(Layer):
         return self.dendritic_boundary(arg1)
 
     def call(self, inputs):  # Layer logic
+        sumOfActivations = 0
+        Activation = 0
         for n in range(self.units):
             for d in range(self.dendrites):
-                self.dendriteInput[d] = K.dot(inputs, self.kernel[d])
+                # print(K.dot(inputs, self.kernel[d]))
+                # self.dendriteInput[d] = K.dot(inputs, self.kernel[d])
+
+                output = K.dot(inputs, K.slice(self.kernel, [d, 0, 0], [self.dendrites, self.input_dim, self.units]))
+
+                # if self.use_bias:
+                #    self.dendriteInput[d, :] = K.bias_add(self.dendriteInput[d, :], self.dendriteBias,
+                #                                          data_format='channels_last')
+
+                # self.dendriteActivations[d] = self.dendritic_transfer(self.dendriteInput[d])
+
+                output = self.dendritic_transfer(output)
+                sumOfActivations += output
                 if self.use_bias:
-                    self.dendriteInput[d, :] = K.bias_add(self.dendriteInput[d, :], self.dendriteBias,
-                                                          data_format='channels_last')
-                self.dendriteActivations[d] = self.dendritic_transfer(self.dendriteInput[d])
-                preoutput = np.sum(self.dendriteActivations)
-                if self.use_bias:
-                    output = K.bias_add(preoutput, self.bias, data_format='channels_last')
+                    sumOfActivations = K.bias_add(sumOfActivations, self.bias, data_format='channels_last')
                 if self.activation is not None:
-                    output = self.activation(output)
-        return output
+                    ## CURRENT: Make 'Activation' a tensor where each entry is the output of a single neuron
+
+                    Activation = self.activation(sumOfActivations)
+        return Activation
 
     def compute_output_shape(self, input_shape):
         assert input_shape and len(input_shape) >= 2
