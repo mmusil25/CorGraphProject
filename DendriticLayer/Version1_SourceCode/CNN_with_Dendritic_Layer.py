@@ -25,7 +25,7 @@ from keras import backend as k
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-from DendriticLayer_v1_1 import Dendritic
+from DendriticLayer_v1_2 import Dendritic
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
 

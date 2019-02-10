@@ -51,8 +51,7 @@ from keras.engine.base_layer import Layer
 # from keras.utils import conv_utils
 # from keras.legacy import interfaces
 
-def multi_variate_sigmoid(x):  # Here x is a vector
-    return (1 + exp(np.sum(x))) ** (-1)
+
 
 
 class Dendritic(Layer):
@@ -148,11 +147,12 @@ class Dendritic(Layer):
         self.input_spec = InputSpec(min_ndim=2)
         self.supports_masking = True
 
+
     def build(self, input_shape):
         assert len(input_shape) >= 2
-        input_dim = input_shape[-1]
 
-        self.kernel = self.add_weight(shape=(self.dendrites, input_dim, self.units),
+        self.input_dim = input_shape[-1]
+        self.kernel = self.add_weight(shape=(self.dendrites, self.input_dim, self.units),
                                       initializer=self.kernel_initializer,
                                       name='kernel',
                                       regularizer=self.kernel_regularizer,
@@ -194,7 +194,7 @@ class Dendritic(Layer):
                                         constraint=self.bias_constraint)
         else:
             self.bias = None
-        self.input_spec = InputSpec(min_ndim=2, axes={-1: input_dim})
+        self.input_spec = InputSpec(min_ndim=2, axes={-1: self.input_dim})
         #  self.built = True
         super(Dendritic, self).build(input_shape)
 
@@ -204,34 +204,35 @@ class Dendritic(Layer):
         return log(numerator / denominator) + self.b_L
 
     def dendritic_transfer(self, x):  # Here x is also vector
-        arg1 = self.c_d * multi_variate_sigmoid(np.multiply(self.a_d, np.subtract(x, self.b_d)) + np.sum(x))
+
+        arg1 = self.c_d * self.multi_variate_sigmoid(np.multiply(self.a_d, np.subtract(x, self.b_d)) + np.sum(x))
         return self.dendritic_boundary(arg1)
 
+    def multi_variate_sigmoid(self, x):  # Here x is a vector
+        return (1 + exp(np.sum(K.eval(x)))) ** (-1)
+
     def call(self, inputs):  # Layer logic
-        sumOfActivations = 0
-        Activation = 0
+        sum_of_activations = 0
+        activ_return = K.placeholder(shape=self.units)
+        activ_calc = np.zeros(self.units)
         for n in range(self.units):
             for d in range(self.dendrites):
                 # print(K.dot(inputs, self.kernel[d]))
                 # self.dendriteInput[d] = K.dot(inputs, self.kernel[d])
-
-                output = K.dot(inputs, K.slice(self.kernel, [d, 0, 0], [self.dendrites, self.input_dim, self.units]))
-
+                dendrite_in = K.dot(inputs, K.slice(self.kernel, [d, 0, 0], [self.dendrites, self.input_dim, self.units]))
                 # if self.use_bias:
                 #    self.dendriteInput[d, :] = K.bias_add(self.dendriteInput[d, :], self.dendriteBias,
                 #                                          data_format='channels_last')
-
-                # self.dendriteActivations[d] = self.dendritic_transfer(self.dendriteInput[d])
-
-                output = self.dendritic_transfer(output)
-                sumOfActivations += output
-                if self.use_bias:
-                    sumOfActivations = K.bias_add(sumOfActivations, self.bias, data_format='channels_last')
-                if self.activation is not None:
-                    ## CURRENT: Make 'Activation' a tensor where each entry is the output of a single neuron
-
-                    Activation = self.activation(sumOfActivations)
-        return Activation
+                # self.dendriteActivations[d] = self.dendritic_transfer( self.dendriteInput[d])
+                dendrite_out = self.dendritic_transfer(dendrite_in)
+                sum_of_activations += dendrite_out
+            if self.use_bias:
+                sum_of_activations = K.bias_add(sum_of_activations, self.bias, data_format='channels_last')
+            if self.activation is not None:
+                # CURRENT: Make 'Activation' a tensor where each entry is the output of a single neuron
+                activ_calc[n] = self.activation(sum_of_activations)
+        K.set_value(activ_return, activ_calc)
+        return activ_return
 
     def compute_output_shape(self, input_shape):
         assert input_shape and len(input_shape) >= 2
