@@ -12,58 +12,24 @@ reference:
 
 https://pytorch.org/docs/stable/notes/extending.html
 
-Notes: This layer definition was not written to be scaled and until that is done
-a few practices need to be followed:
-
-1. input_features must be set equal to 1568 = (7*7*32), output_features = 10
-
 
 """
-import  as np
-import torch
-import torch.nn as nn
-import torchvision
-import torchvision.transforms as transforms
 
-def multi_variate_sigmoid(x):  # Here x is a numpy array
-    return (1 + exp(np.sum(K.eval(x)))) ** (-1)
+# Inherit from Function
+class LinearFunction(Function):
 
-def dendritic_boundary(x):  # Here x is a single valued real number
-    alpha_L, alpha_U = 0.5, 0.5
-    b_U, b_L = 0, 1
-    numerator = (1 + exp(alpha_L * (x - b_L))) ** (alpha_L ** (-1))
-    denominator = (1 + exp(alpha_U * (x - b_U))) ** (alpha_U ** (-1))
-    return log(numerator / denominator) + b_L
-
-def dendritic_transfer(x):  # Here x is a numpy array
-    a_d, c_d, b_d = 1, 0.5, 0.5 
-    arg1 = c_d * multi_variate_sigmoid(np.multiply(a_d, np.subtract(x, b_d)) + np.sum(x))
-    return dendritic_boundary(arg1)
-
-
-class Dendritic(Function):
-        
-    def forward(ctx, activations, weight, dendrites, bias=None):
+    # Note that both forward and backward are @staticmethods
+    @staticmethod
+    # bias is an optional argument
+    def forward(ctx, input, weight, bias=None):
         ctx.save_for_backward(input, weight, bias)
-        activations_np = activations.numpy()
-        weight_np = weight.numpy()
-        if bias is not None:
-            bias_np = bias.numpy()
-            
-        dendrites_np = dendrites.numpy() 
-        soma_input = np.zeros(dendrites)
-        output = np.zeros(output_features)
-        
-        for n in range(output_features):
-            for d in range(dendrites):
-                soma_input[d] = np.dot(activations[d:d+dendrites+1],weight[n:,d:])
-            output[n] = dendritic_transfer(soma_input)
+        output = input.mm(weight.t())
         if bias is not None:
             output += bias.unsqueeze(0).expand_as(output)
         return output
 
-
- 
+    # This function has only a single output, so it gets only one gradient
+    @staticmethod
     def backward(ctx, grad_output):
         # This is a pattern that is very convenient - at the top of backward
         # unpack saved_tensors and initialize all gradients w.r.t. inputs to
@@ -88,21 +54,20 @@ class Dendritic(Function):
     
 linear = LinearFunction.apply
     
-#from torch.autograd import gradcheck
+from torch.autograd import gradcheck
 
-## gradcheck takes a tuple of tensors as input, check if your gradient
-## evaluated with these tensors are close enough to numerical
-## approximations and returns True if they all verify this condition.
-#input = (torch.randn(20,20,dtype=torch.double,requires_grad=True), torch.randn(30,20,dtype=torch.double,requires_grad=True))
-#test = gradcheck(linear, input, eps=1e-6, atol=1e-4)
-#print(test)
+# gradcheck takes a tuple of tensors as input, check if your gradient
+# evaluated with these tensors are close enough to numerical
+# approximations and returns True if they all verify this condition.
+input = (torch.randn(20,20,dtype=torch.double,requires_grad=True), torch.randn(30,20,dtype=torch.double,requires_grad=True))
+test = gradcheck(linear, input, eps=1e-6, atol=1e-4)
+print(test)
 
 class Linear(nn.Module):
-    def __init__(self, input_features, output_features, dendrites, bias=True):
+    def __init__(self, input_features, output_features, bias=True):
         super(Linear, self).__init__()
         self.input_features = input_features
         self.output_features = output_features
-        self.dendrites = dendrites
 
         # nn.Parameter is a special kind of Tensor, that will get
         # automatically registered as Module's parameter once it's assigned
@@ -111,10 +76,7 @@ class Linear(nn.Module):
         # won't be converted when e.g. .cuda() is called. You can use
         # .register_buffer() to register buffers.
         # nn.Parameters require gradients by default.
-        
-        
-        self.weight = nn.Parameter(torch.Tensor(output_features, dendrites,input_features/dendrites)) #TODO: Add input protection for the final dimension so that
-                                                                                                      # this layer can handle any input size
+        self.weight = nn.Parameter(torch.Tensor(output_features, input_features))
         if bias:
             self.bias = nn.Parameter(torch.Tensor(output_features))
         else:
@@ -131,4 +93,9 @@ class Linear(nn.Module):
         # See the autograd section for explanation of what happens here.
         return LinearFunction.apply(input, self.weight, self.bias)
 
-   
+    def extra_repr(self):
+        # (Optional)Set the extra information about this module. You can test
+        # it by printing an object of this class.
+        return 'in_features={}, out_features={}, bias={}'.format(
+            self.in_features, self.out_features, self.bias is not None
+        )
