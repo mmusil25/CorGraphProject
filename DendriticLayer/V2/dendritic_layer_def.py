@@ -17,16 +17,16 @@ a few practices need to be followed:
 
 1. input_features must be set equal to 1568 = (7*7*32), output_features = 10
 
-
 """
-import  as np
+
 import torch
 import torch.nn as nn
-import torchvision
-import torchvision.transforms as transforms
+import numpy
+
 
 def multi_variate_sigmoid(x):  # Here x is a numpy array
     return (1 + exp(np.sum(K.eval(x)))) ** (-1)
+
 
 def dendritic_boundary(x):  # Here x is a single valued real number
     alpha_L, alpha_U = 0.5, 0.5
@@ -35,71 +35,72 @@ def dendritic_boundary(x):  # Here x is a single valued real number
     denominator = (1 + exp(alpha_U * (x - b_U))) ** (alpha_U ** (-1))
     return log(numerator / denominator) + b_L
 
+
 def dendritic_transfer(x):  # Here x is a numpy array
     a_d, c_d, b_d = 1, 0.5, 0.5 
     arg1 = c_d * multi_variate_sigmoid(np.multiply(a_d, np.subtract(x, b_d)) + np.sum(x))
     return dendritic_boundary(arg1)
 
 
-class Dendritic(Function):
-        
-    def forward(ctx, activations, weight, dendrites, bias=None):
-        ctx.save_for_backward(input, weight, bias)
-        activations_np = activations.numpy()
-        weight_np = weight.numpy()
-        if bias is not None:
-            bias_np = bias.numpy()
-            
-        dendrites_np = dendrites.numpy() 
-        soma_input = np.zeros(dendrites)
-        output = np.zeros(output_features)
-        
-        for n in range(output_features):
-            for d in range(dendrites):
-                soma_input[d] = np.dot(activations[d:d+dendrites+1],weight[n:,d:])
-            output[n] = dendritic_transfer(soma_input)
-        if bias is not None:
-            output += bias.unsqueeze(0).expand_as(output)
-        return output
-
-
- 
-    def backward(ctx, grad_output):
-        # This is a pattern that is very convenient - at the top of backward
-        # unpack saved_tensors and initialize all gradients w.r.t. inputs to
-        # None. Thanks to the fact that additional trailing Nones are
-        # ignored, the return statement is simple even when the function has
-        # optional inputs.
-        input, weight, bias = ctx.saved_tensors
-        grad_input = grad_weight = grad_bias = None
-
-        # These needs_input_grad checks are optional and there only to
-        # improve efficiency. If you want to make your code simpler, you can
-        # skip them. Returning gradients for inputs that don't require it is
-        # not an error.
-        if ctx.needs_input_grad[0]:
-            grad_input = grad_output.mm(weight)
-        if ctx.needs_input_grad[1]:
-            grad_weight = grad_output.t().mm(input)
-        if bias is not None and ctx.needs_input_grad[2]:
-            grad_bias = grad_output.sum(0).squeeze(0)
-
-        return grad_input, grad_weight, grad_bias
+# class Dendritic(Function):
+#     def forward(ctx, activations, weight, dendrites, bias=None):
+#         ctx.save_for_backward(input, weight, bias)
+#         activations_np = activations.numpy()
+#         weight_np = weight.numpy()
+#         if bias is not None:
+#             bias_np = bias.numpy()
+#
+#         dendrites_np = dendrites.numpy()
+#         soma_input = np.zeros(dendrites)
+#         output = np.zeros(output_features)
+#
+#         for n in range(output_features):
+#             for d in range(dendrites):
+#                 soma_input[d] = np.dot(activations[d:d+dendrites+1],weight[n:,d:])
+#             output[n] = dendritic_transfer(soma_input)
+#         if bias is not None:
+#             output += bias.unsqueeze(0).expand_as(output)
+#         return torch.tensor(output)
+#
+#
+#
+#     def backward(ctx, grad_output):
+#         # This is a pattern that is very convenient - at the top of backward
+#         # unpack saved_tensors and initialize all gradients w.r.t. inputs to
+#         # None. Thanks to the fact that additional trailing Nones are
+#         # ignored, the return statement is simple even when the function has
+#         # optional inputs.
+#         input, weight, bias = ctx.saved_tensors
+#         grad_input = grad_weight = grad_bias = None
+#
+#         # These needs_input_grad checks are optional and there only to
+#         # improve efficiency. If you want to make your code simpler, you can
+#         # skip them. Returning gradients for inputs that don't require it is
+#         # not an error.
+#         if ctx.needs_input_grad[0]:
+#             grad_input = grad_output.mm(weight)
+#         if ctx.needs_input_grad[1]:
+#             grad_weight = grad_output.t().mm(input)
+#         if bias is not None and ctx.needs_input_grad[2]:
+#             grad_bias = grad_output.sum(0).squeeze(0)
+#
+#         return grad_input, grad_weight, grad_bias
+#
+# linear = LinearFunction.apply
     
-linear = LinearFunction.apply
-    
-#from torch.autograd import gradcheck
+# from torch.autograd import gradcheck
 
-## gradcheck takes a tuple of tensors as input, check if your gradient
-## evaluated with these tensors are close enough to numerical
-## approximations and returns True if they all verify this condition.
-#input = (torch.randn(20,20,dtype=torch.double,requires_grad=True), torch.randn(30,20,dtype=torch.double,requires_grad=True))
-#test = gradcheck(linear, input, eps=1e-6, atol=1e-4)
-#print(test)
+# gradcheck takes a tuple of tensors as input, check if your gradient
+# evaluated with these tensors are close enough to numerical
+# approximations and returns True if they all verify this condition.
+# input = (torch.randn(20,20,dtype=torch.double,requires_grad=True),
+#          torch.randn(30,20,dtype=torch.double,requires_grad=True))
+# test = gradcheck(linear, input, eps=1e-6, atol=1e-4)
+# print(test)
 
-class Linear(nn.Module):
+class Dendritic(nn.Module):
     def __init__(self, input_features, output_features, dendrites, bias=True):
-        super(Linear, self).__init__()
+        super(Dendritic, self).__init__()
         self.input_features = input_features
         self.output_features = output_features
         self.dendrites = dendrites
@@ -112,9 +113,11 @@ class Linear(nn.Module):
         # .register_buffer() to register buffers.
         # nn.Parameters require gradients by default.
         
-        
-        self.weight = nn.Parameter(torch.Tensor(output_features, dendrites,input_features/dendrites)) #TODO: Add input protection for the final dimension so that
-                                                                                                      # this layer can handle any input size
+        self.weight = nn.Parameter(torch.Tensor(output_features, dendrites,input_features/dendrites))
+
+        # TODO: Add input protection for the final dimension so that
+        # this layer can handle any input size
+
         if bias:
             self.bias = nn.Parameter(torch.Tensor(output_features))
         else:
@@ -127,8 +130,18 @@ class Linear(nn.Module):
         if bias is not None:
             self.bias.data.uniform_(-0.1, 0.1)
 
-    def forward(self, input):
-        # See the autograd section for explanation of what happens here.
-        return LinearFunction.apply(input, self.weight, self.bias)
-
+    def forward(self, input_set):
+        input_np = input_set.numpy()
+        weight_np = self.weight.numpy()
+        if self.bias is not None:
+            bias_np = self.bias.numpy()
+        soma_input = numpy.zeros(self.dendrites)
+        output = numpy.zeros(self.output_features)
+        for n in range(self.output_features):
+            for d in range(self.dendrites):
+                soma_input[d] = numpy.dot(input_set[d:d + self.dendrites + 1], weight_np[n:, d:])
+            output[n] = dendritic_transfer(soma_input)
+            if self.bias is not None:
+                output += bias_np
+        return torch.tensor(output)
    

@@ -12,11 +12,11 @@ at https://github.com/yunjey/pytorch-tutorial/tree/master/tutorials/02-intermedi
 This network was created to implement the novel dendritic layer. 
 
 """
-
+import dendritic_layer_def
 import torch 
 import torch.nn as nn
-import torchvision
-import torchvision.transforms as transforms
+# import torchvision
+# import torchvision.transforms as transforms
 
 
 # Device configuration
@@ -48,6 +48,7 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           shuffle=False)
 
 # Convolutional neural network (two convolutional layers)
+
 class ConvNet(nn.Module):
     def __init__(self, num_classes=10):
         super(ConvNet, self).__init__()
@@ -61,13 +62,14 @@ class ConvNet(nn.Module):
             nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
-        self.fc = nn.Linear(7*7*32, num_classes)
-        
+        #self.fc = nn.Linear(7*7*32, num_classes)
+        self.dendrite = dendritic_layer_def.Dendritic(1568, 10, 32, 0.2)
     def forward(self, x):
         out = self.layer1(x)
         out = self.layer2(out)
         out = out.reshape(out.size(0), -1)
-        out = self.fc(out)
+        #out = self.fc(out)
+        out = self.dendrite(out)
         return out
 
 model = ConvNet(num_classes).to(device)
