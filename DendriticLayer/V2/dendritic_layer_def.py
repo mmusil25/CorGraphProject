@@ -25,20 +25,20 @@ import numpy
 
 
 def multi_variate_sigmoid(x):  # Here x is a numpy array
-    return (1 + exp(np.sum(K.eval(x)))) ** (-1)
+    return (1 + numpy.exp(numpy.sum(x))) ** (-1)
 
 
 def dendritic_boundary(x):  # Here x is a single valued real number
     alpha_L, alpha_U = 0.5, 0.5
     b_U, b_L = 0, 1
-    numerator = (1 + exp(alpha_L * (x - b_L))) ** (alpha_L ** (-1))
-    denominator = (1 + exp(alpha_U * (x - b_U))) ** (alpha_U ** (-1))
-    return log(numerator / denominator) + b_L
+    numerator = (1 + numpy.exp(alpha_L * (x - b_L))) ** (alpha_L ** (-1))
+    denominator = (1 + numpy.exp(alpha_U * (x - b_U))) ** (alpha_U ** (-1))
+    return numpy.log(numerator / denominator) + b_L
 
 
 def dendritic_transfer(x):  # Here x is a numpy array
     a_d, c_d, b_d = 1, 0.5, 0.5 
-    arg1 = c_d * multi_variate_sigmoid(np.multiply(a_d, np.subtract(x, b_d)) + np.sum(x))
+    arg1 = c_d * multi_variate_sigmoid(numpy.multiply(a_d, numpy.subtract(x, b_d)) + numpy.sum(x))
     return dendritic_boundary(arg1)
 
 
@@ -99,11 +99,13 @@ def dendritic_transfer(x):  # Here x is a numpy array
 # print(test)
 
 class Dendritic(nn.Module):
-    def __init__(self, input_features, output_features, dendrites, bias=True):
+    def __init__(self, input_features, output_features, dendrites, den_view, batch_size, bias=True):
         super(Dendritic, self).__init__()
         self.input_features = input_features
         self.output_features = output_features
         self.dendrites = dendrites
+        self.Den_view = den_view # Number if input neurons each dendrite can see.
+        self.batch_size = batch_size
 
         # nn.Parameter is a special kind of Tensor, that will get
         # automatically registered as Module's parameter once it's assigned
@@ -113,7 +115,7 @@ class Dendritic(nn.Module):
         # .register_buffer() to register buffers.
         # nn.Parameters require gradients by default.
         
-        self.weight = nn.Parameter(torch.Tensor(output_features, dendrites,input_features/dendrites))
+        self.weight = nn.Parameter(torch.Tensor(output_features, dendrites, int(input_features/dendrites)))
 
         # TODO: Add input protection for the final dimension so that
         # this layer can handle any input size
@@ -131,17 +133,18 @@ class Dendritic(nn.Module):
             self.bias.data.uniform_(-0.1, 0.1)
 
     def forward(self, input_set):
-        input_np = input_set.numpy()
-        weight_np = self.weight.numpy()
+        input_set = input_set.detach().numpy()
+        weight_np = self.weight.detach().numpy()
         if self.bias is not None:
-            bias_np = self.bias.numpy()
+            bias_np = self.bias.detach().numpy()
         soma_input = numpy.zeros(self.dendrites)
-        output = numpy.zeros(self.output_features)
-        for n in range(self.output_features):
-            for d in range(self.dendrites):
-                soma_input[d] = numpy.dot(input_set[d:d + self.dendrites + 1], weight_np[n:, d:])
-            output[n] = dendritic_transfer(soma_input)
-            if self.bias is not None:
-                output += bias_np
+        output = numpy.zeros( (int(self.batch_size), int(self.output_features)))
+        for i in range(self.batch_size):
+            for n in range(self.output_features):
+                for d in range(self.dendrites):
+                    soma_input[d] = numpy.dot(input_set[i,d:d + self.Den_view], weight_np[n,d].reshape(49,1))
+                output[i, n] = dendritic_transfer(soma_input)
+                if self.bias is not None:
+                    output[i] += bias_np
         return torch.tensor(output)
    

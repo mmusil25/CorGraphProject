@@ -15,8 +15,8 @@ This network was created to implement the novel dendritic layer.
 import dendritic_layer_def
 import torch 
 import torch.nn as nn
-# import torchvision
-# import torchvision.transforms as transforms
+import torchvision
+import torchvision.transforms as transforms
 
 
 # Device configuration
@@ -63,7 +63,7 @@ class ConvNet(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
         #self.fc = nn.Linear(7*7*32, num_classes)
-        self.dendrite = dendritic_layer_def.Dendritic(1568, 10, 32, 0.2)
+        self.dendrite = dendritic_layer_def.Dendritic(1568, 10, 32, 49, 100)
     def forward(self, x):
         out = self.layer1(x)
         out = self.layer2(out)
