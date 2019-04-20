@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="51820ade-375b-489a-b4f7-fffaf7fbda42" name="Default Changelist" comment="" />
+    <list default="true" id="51820ade-375b-489a-b4f7-fffaf7fbda42" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../V3/.idea/libraries/R_User_Library.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../V3/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../V3/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/V2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/V2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="V2" />
+  </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.40223047">
+    <splitter split-orientation="horizontal" split-proportion="0.46319702">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/cnn_with_dendritic.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="25">
+                <state relative-caret-position="1780">
                   <caret line="93" selection-start-line="93" selection-end-line="93" />
                   <folding>
                     <element signature="e#328#354#0" expanded="true" />
@@ -24,10 +34,28 @@
               </provider>
             </entry>
           </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$USER_HOME$/.local/lib/python3.7/site-packages/torch/tensor.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="129">
+                  <caret line="101" selection-start-line="101" selection-end-line="101" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$USER_HOME$/.local/lib/python3.7/site-packages/torch/autograd/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1640">
+                  <caret line="90" selection-start-line="90" selection-end-line="90" />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/linear_layer_def.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-7">
+                <state relative-caret-position="420">
                   <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
                 </state>
               </provider>
@@ -36,7 +64,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/cnn_control.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="155">
+                <state relative-caret-position="760">
                   <caret line="41" selection-start-line="41" selection-end-line="41" />
                   <folding>
                     <element signature="e#355#367#0" expanded="true" />
@@ -48,7 +76,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/dendritic_layer_def.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="35">
+                <state relative-caret-position="680">
                   <caret line="36" selection-start-line="36" selection-end-line="36" />
                   <folding>
                     <element signature="e#450#462#0" expanded="true" />
@@ -60,7 +88,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/numpySandbox.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-7">
+                <state relative-caret-position="160">
                   <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
                 </state>
               </provider>
@@ -69,12 +97,12 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/dendritic_layer_def.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="385">
-                  <caret line="146" column="10" selection-start-line="146" selection-start-column="10" selection-end-line="146" selection-end-column="10" />
+                <state relative-caret-position="2140">
+                  <caret line="107" column="36" selection-start-line="107" selection-start-column="36" selection-end-line="107" selection-end-column="36" />
                   <folding>
                     <element signature="e#450#462#0" expanded="true" />
                   </folding>
@@ -130,25 +158,17 @@
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
+      <autoscrollFromSource ProjectPane="true" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane" />
       <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="V2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="V2" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -199,7 +219,7 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cnn_with_dendritic.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="EMULATE_TERMINAL" value="true" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
@@ -226,6 +246,11 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.cnn_control" />
+      <item itemvalue="Python.cnn_with_dendritic" />
+      <item itemvalue="Python.linear_layer_def" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.cnn_with_dendritic" />
@@ -264,25 +289,28 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="768" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4969697" weight="0.3237519" />
-      <window_info id="Structure" order="1" sideWeight="0.5030303" side_tool="true" weight="0.3237519" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" />
+      <window_info id="Structure" order="0" sideWeight="0.50431776" side_tool="true" weight="0.32342008" />
+      <window_info id="Favorites" order="1" sideWeight="0.50431776" side_tool="true" weight="0.22899628" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" sideWeight="0.4956822" visible="true" weight="0.27190334" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.40860215" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.4362519" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39880952" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="7" visible="true" weight="0.11059908" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.2642089" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32998565" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.49308756" />
+      <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="R Graphics" order="3" />
+      <window_info anchor="right" id="R Packages" order="4" />
     </layout>
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -302,43 +330,19 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dendritic_layer_def.py</url>
-          <line>144</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
+      <default-breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/numpySandbox.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/linear_layer_def.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cnn_control.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="41" selection-start-line="41" selection-end-line="41" />
-          <folding>
-            <element signature="e#355#367#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cnn_with_dendritic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
+        <state relative-caret-position="1780">
           <caret line="93" selection-start-line="93" selection-end-line="93" />
           <folding>
             <element signature="e#328#354#0" expanded="true" />
@@ -346,10 +350,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.7/site-packages/torch/autograd/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1640">
+          <caret line="90" selection-start-line="90" selection-end-line="90" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/linear_layer_def.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cnn_control.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="760">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
+          <folding>
+            <element signature="e#355#367#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/numpySandbox.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.7/site-packages/torch/tensor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="101" selection-start-line="101" selection-end-line="101" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dendritic_layer_def.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="146" column="10" selection-start-line="146" selection-start-column="10" selection-end-line="146" selection-end-column="10" />
+        <state relative-caret-position="2140">
+          <caret line="107" column="36" selection-start-line="107" selection-start-column="36" selection-end-line="107" selection-end-column="36" />
           <folding>
             <element signature="e#450#462#0" expanded="true" />
           </folding>

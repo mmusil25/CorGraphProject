@@ -8,6 +8,8 @@ Code Source:
 
 https://github.com/rianrajagede/iris-python/blob/master/Python/iris_plain_mlp.py
 """
+from typing import List
+
 """
 SECTION 1 : Load and setup data for training
 """
@@ -83,15 +85,15 @@ def dendritic_layer(input_set, weights, dendrites, output_features, Den_view, ba
     #output = np.zeros((int(batch_size), int(output_features)))
     output = np.zeros(int(output_features))
     #for i in range(batch_size):
+    #print(['weights.shape', weights.shape])
     for n in range(output_features):
         for d in range(dendrites):
             # soma_input[d] = np.dot(input_set[d:d + Den_view], weights[n, d].reshape(49, 1))
-            soma_input[d] = np.dot(input_set[d:d + Den_view], weights[n, d])
+            soma_input[d] = np.dot(input_set[(Den_view * d): (Den_view * (d+1))], weights[n][d][:])
         output[n] = dendritic_transfer(soma_input)
             # if self.bias is not None:
             #     output[i] += bias_np
     return output
-
 
 def matrix_mul_bias(A, B, bias):  # Matrix multiplication (for Testing)
     C = [[0 for i in range(len(B[0]))] for i in range(len(A))]
@@ -133,14 +135,19 @@ def sigmoid(A, deriv=False):
 # Define parameter
 alfa = 0.005
 epoch = 400
-neuron = [4, 5, 12, 3]  # number of neuron each layer
-dendrites = 4
+neuron = [4, 6, 6]  # number of neuron each layer
+dendrites = 2
 Den_view = 3
+Output_features = 3
 # Initiate weight and bias with 0 value
 weight = [[0 for j in range(neuron[1])] for i in range(neuron[0])]
 weight_2 = [[0 for j in range(neuron[2])] for i in range(neuron[1])]
-dendrite_weights = np.subtract(2*np.random.normal(0, 1, [neuron[3], dendrites, int(neuron[2]/dendrites)]),
-                               np.full([neuron[3], dendrites, int(neuron[2]/dendrites)], -1))
+
+# dendrite_weights = np.subtract(2*np.random.normal(0, 1, [neuron[3], dendrites, int(neuron[2]/dendrites)]),
+#                               np.full([neuron[3], dendrites, int(neuron[2]/dendrites)], -1))
+dendrite_weights = np.subtract(2*np.random.normal(0, 1, [Output_features, dendrites, Den_view]),
+                               np.full([Output_features, dendrites, Den_view], -1))
+#print(['dendrite_weights.shape' , dendrite_weights.shape])
 
 bias = [0 for i in range(neuron[1])]
 bias_2 = [0 for i in range(neuron[2])]
@@ -163,7 +170,8 @@ for e in range(epoch):
         X_1 = sigmoid(h_1)
         h_2 = vec_mat_bias(X_1, weight_2, bias_2)
         X_2 = sigmoid(h_2)
-        X_3 = dendritic_layer(X_2, dendrite_weights, dendrites, neuron[3], Den_view)
+        #print(f"X_2: {X_2}")
+        X_3 = dendritic_layer(X_2, dendrite_weights, dendrites, Output_features, Den_view)
         #  dendritic_layer(input_set, weights, dendrites, output_features, Den_view, batch_size=None, bias=None)
         # Convert to One-hot target
         target = [0, 0, 0]
@@ -177,24 +185,34 @@ for e in range(epoch):
 
         # Backward propagation
         # Update weight_2 and bias_2 (layer 2)
-        delta_3 = []
-        for j in range(neuron[3]):
+        delta_3: List[int] = []
+        for j in range(Output_features):
             delta_3.append(-1 * (target[j] - X_3[j]) * X_3[j] * (1 - X_3[j]))
 
-        # for i in range(neuron[1]):
-        #     for j in range(neuron[2]):
-        #         weight_2[i][j] -= alfa * (delta_3[j] * X_1[i])
-        #         bias_2[j] -= alfa * delta_3[j]
+        for i in range(Output_features):
+            for j in range(dendrites):
+                for k in range(Den_view):
+                    # TODO: Averaging the outputs from X_2 is kind of wierd...
+                    dendrite_weights[i][j][k] -= alfa * (delta_3[i] * (X_2[k]+X_2[k+1])/2)
+                    # bias_2[j] -= alfa * delta_3[j]
 
-        for i in range(neuron[2]):
-            for j in range(neuron[3]):
-                dendrite_weights[i][j] -= alfa * (delta_3[j] * X_2[i])
-                bias_2[j] -= alfa * delta_3[j]
+        #TODO: Fix the line below here. I should make sure it's a good calculation.
+        # Also resize dendrite_weights for mult
+        #print(["dendrite_weights[0:3]:", dendrite_weights[0:3], "dendrite_weights[0:3].shape:", dendrite_weights[0:3].shape])
+        #print(["delta_3:", delta_3, "delta_3.shape:", len(delta_3)])
+        delta_2 = mat_vec(np.reshape(dendrite_weights[0:3], [6, 3]), delta_3)
+        #print(["delta_2", delta_2])
+        #print(["X_2", X_2])
+        for i in range(neuron[1]):
+            delta_2[i] = delta_2[i]*(X_2[i] * (1 - X_2[i]))
+
+        #TODO: Revise this potentially ineffective way of matching delta_3 to bias_2
+        delta_3_copy = np.concatenate((delta_3, delta_3), axis=0)
 
         for i in range(neuron[1]):
             for j in range(neuron[2]):
-                weight_2[i][j] -= alfa * (delta_3[j] * X_1[i])
-                bias_2[j] -= alfa * delta_3[j]
+                weight_2[i][j] -= alfa * (delta_2[j] * X_1[i])
+                bias_2[j] -= alfa * delta_3_copy[j]
 
         # Update weight and bias (layer 1)
         delta_1 = mat_vec(weight_2, delta_3)
@@ -207,8 +225,9 @@ for e in range(epoch):
                 bias[j] -= alfa * delta_1[j]
 
     cost_total /= len(train_X)
-    if (e % 100 == 0):
-        print("Epoch" , e/100, " out of ", epoch/100)
+    interval = 50
+    if (e % interval == 0):
+        print("Epoch" , e/interval, " out of ", epoch/interval)
         print("Epoch cost: ", cost_total)
 
 """
