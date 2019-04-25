@@ -8,7 +8,15 @@ My (Mark Musil's) contributions to the project are described in the following se
 
 ### SparseVecs
 
+Python application for processing an adjacency matrix, creating sparse representations
+for each vertex, and representations edges by creating vectors for each row
+which are the concatenation of the sparse representations for each vertex.
+Created for the purposes of the BICL research group led by Dr. Dan Hammerstrom.
+Written by Mark Musil December 2017
+
 ### TestImageGen
+
+
 
 ### CorticalVision
 
