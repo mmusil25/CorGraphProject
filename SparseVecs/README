@@ -19,7 +19,7 @@ Usage:
 
 Input can either be manual or via a .csv file. In either case the program will ask for a sparseness, word width, and number of vertices. Sparseness (0<sparseness<1) is the percentage of bits set to 1 in your sparse node representations. Word width is the size in number of bits of the sparse representations. The number of vertices is the M dimension in your MxM adjacency matrix.
 
-Manual Input: You will be allowed to enter each entry manually for processing, tedious I know. 
+Manual Input: You will be allowed to enter each entry manually for processing.
 File based input: Add a .csv file to the same directory as SparseVecsV1.py with 1 comma seperating each entry and a newline seperating rows.
 TestFile.csv holds the following example:
 
