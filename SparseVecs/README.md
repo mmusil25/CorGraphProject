@@ -39,12 +39,11 @@ to a file of your naming a set of vectors that are a concatenation of the sparse
 given row. For example the adhacency matrix in TestFile.csv outputs the following set of representations when given a
 wordwidth of 10 and sparseness of 0.4.
 
-Your sparse representation for each vertex is:
-Vertex 0:
-[0, 0, 0, 1, 1, 1, 1, 0, 0, 0]
-Vertex 1:
-[1, 0, 1, 0, 1, 0, 0, 0, 1, 0]
-Vertex 2:
+Your sparse representation for each vertex is:  
+Vertex 0:  [0, 0, 0, 1, 1, 1, 1, 0, 0, 0]  
+Vertex 1:  
+[1, 0, 1, 0, 1, 0, 0, 0, 1, 0]  
+Vertex 2:  
 [0, 1, 0, 1, 1, 1, 0, 0, 0, 0]
 Vertex 3:
 [0, 1, 1, 0, 0, 0, 1, 0, 1, 0]
