@@ -5,10 +5,10 @@ for each vertex, and representations edges by creating vectors for each row
 which are the concatenation of the sparse representations for each vertex.
 Created for the purposes of the BICL research group led by Dr. Dan Hammerstrom.
 Written by Mark Musil December 2017
-#
-#Questions? Email Mark at mmusil@pdx.edu
-#
-#================================================
+
+Questions? Email me at mmusil@pdx.edu
+
+
 
 The main program is the file SparseVecsV1.py and can be run in any Python environment which supports a command line. 
 It has sparsefuncs.py as a dependency and sparsefuncs.py must be contained in the same foldar as SparseVecsV1.py. 
