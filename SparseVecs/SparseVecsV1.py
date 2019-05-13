@@ -45,7 +45,7 @@ while True:
     
 ADJ = options[inputchoice](vertices) #Invoke the chosen matrix entry method
 Sparsevecs = sf.SparseRepGen(vertices, sparse, width, ADJ) #Generate sparse reps for each vertex
-print 'Your final set of vectors will be written out to a csv file.\n'
+print('Your final set of vectors will be written out to a csv file.\n')
 outputFileName = raw_input('Enter the desired name of your output file with no spaces and without the .csv extension.\n')
 outputFileName = outputFileName + '.csv'
 ConcatMat = sf.ConcatMatGen(vertices, Sparsevecs, ADJ, outputFileName) #Generate the matrix of concatenated sparse reps

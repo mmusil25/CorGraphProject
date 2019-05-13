@@ -1,0 +1,13 @@
+ alpha: 0.0050, epoch: 400 
+ neuron[0]: 4, neuron[1]: 6, neuron[2]: 6 
+ Dendritic layer dimensions (in order) 
+: Output_features: 3, dendrites: 2, Den_view: 3 
+###### Begin Training Output ###### 
+Epoch 0.0 out of 8.0
+Epoch cost: 0.37284 
+Epoch 1.0 out of 8.0
+Epoch cost: 0.34598 
+Epoch 2.0 out of 8.0
+Epoch cost: 0.34598 
+Epoch 3.0 out of 8.0
+Epoch cost: 0.34598 

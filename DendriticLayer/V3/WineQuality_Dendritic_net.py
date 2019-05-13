@@ -18,31 +18,29 @@ import csv
 import random
 import math
 import numpy as np
-import matplotlib.pyplot as plt
-import sys
- 
- 
+
 random.seed(123)
 
 # Load dataset
-with open('./iris/iris.csv') as csvfile:
-    csvreader = csv.reader(csvfile)
+with open('./winequality-white.csv') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter = ";")
     next(csvreader, None)  # skip header
     dataset = list(csvreader)
 
 # Change string value to numeric
 for row in dataset:
-    row[4] = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"].index(row[4])
-    row[:4] = [float(row[j]) for j in range(len(row))]
+    # row[4] = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"].index(row[4])
+    row[:] = [float(row[j]) for j in range(len(row))]
+    # print(["row", row])
 
 # Split x and y (feature and target)
 random.shuffle(dataset)
 datatrain = dataset[:int(len(dataset) * 0.8)]
 datatest = dataset[int(len(dataset) * 0.8):]
-train_X = [data[:4] for data in datatrain]
-train_y = [data[4] for data in datatrain]
-test_X = [data[:4] for data in datatest]
-test_y = [data[4] for data in datatest]
+train_X = [data[:11] for data in datatrain]
+train_y = [data[11] for data in datatrain]
+test_X = [data[:11] for data in datatest]
+test_y = [data[11] for data in datatest]
 
 """
 SECTION 2 : Build and Train Model
@@ -56,7 +54,6 @@ learning rate = 0.005
 epoch = 400
 best result = 96.67%
 """
-
 
 def multi_variate_sigmoid(x):  # Here x is a np array
     return (1 + np.exp(np.sum(x))) ** (-1)
@@ -77,7 +74,6 @@ def dendritic_transfer(x):  # Here x is a numpy array
 
 
 def dendritic_layer(input_set, weights, dendrites, output_features, Den_view, batch_size=None, bias=None):
-    
     """
     batch_size is not used in this implementation.
 
@@ -96,7 +92,7 @@ def dendritic_layer(input_set, weights, dendrites, output_features, Den_view, ba
             soma_input[d] = np.dot(input_set[(Den_view * d): (Den_view * (d+1))], weights[n][d][:])
         output[n] = dendritic_transfer(soma_input)
             # if self.bias is not None:
-            #     output[i] += bias_np
+            # output[i] += bias_np
     return output
 
 def matrix_mul_bias(A, B, bias):  # Matrix multiplication (for Testing)
@@ -107,7 +103,6 @@ def matrix_mul_bias(A, B, bias):  # Matrix multiplication (for Testing)
                 C[i][j] += A[i][k] * B[k][j]
             C[i][j] += bias[j]
     return C
-
 
 def vec_mat_bias(A, B, bias):  # Vector (A) x matrix (B) multiplication
     C = [0 for i in range(len(B[0]))]
@@ -138,14 +133,14 @@ def sigmoid(A, deriv=False):
 # Define parameter
 alfa = 0.005
 epoch = 400
-neuron = [4, 6, 6]  # number of neuron each layer
+neuron = [11, 10, 10]  # number of neuron each layer
 
 # Dendritic layer's weight dimensions in order
-Output_features = 3  # Number of neurons
+Output_features = 10  # Number of neurons
 dendrites = 2
-Den_view = 3
+Den_view = 5
 
-f = open("IRIS_trial7.txt", "w+")
+f = open("Wine_trial1.txt", "w+")
 f.write(" alpha: %.4f, epoch: %d \n" % (alfa, epoch))
 f.write(" neuron[0]: %d, neuron[1]: %d, neuron[2]: %d \n" % (neuron[0], neuron[1], neuron[2]))
 f.write(" Dendritic layer dimensions (in order) \n: "
@@ -157,8 +152,8 @@ weight_2 = [[0 for j in range(neuron[2])] for i in range(neuron[1])]
 
 # dendrite_weights = np.subtract(2*np.random.normal(0, 1, [neuron[3], dendrites, int(neuron[2]/dendrites)]),
 #                               np.full([neuron[3], dendrites, int(neuron[2]/dendrites)], -1))
-dendrite_weights = np.subtract(np.random.normal(0, 1, [Output_features, dendrites, Den_view]),
-                               np.full([Output_features, dendrites, Den_view], 0))
+dendrite_weights = np.subtract(2*np.random.normal(0, 1, [Output_features, dendrites, Den_view]),
+                               np.full([Output_features, dendrites, Den_view], -1))
 #print(['dendrite_weights.shape' , dendrite_weights.shape])
 
 bias = [0 for i in range(neuron[1])]
@@ -173,52 +168,47 @@ for i in range(neuron[1]):
     for j in range(neuron[2]):
         weight_2[i][j] = 2*random.gauss(0, 1) - 1
 
-cost_for_graph = []
 for e in range(epoch):
     cost_total = 0
     for idx, x in enumerate(train_X):  # Update for each data; SGD
-        print(["x", x])
+
         # Forward propagation
         h_1 = vec_mat_bias(x, weight, bias)
-        print(["h_1", h_1])
         X_1 = sigmoid(np.clip(h_1, -500, 500))
-        print(["X_1", X_1])
         h_2 = vec_mat_bias(X_1, weight_2, bias_2)
-        print(["h_2", h_2])
         X_2 = sigmoid(np.clip(h_2, -500, 500))
-        print(["X_2", X_2])
+        # print(f"X_2: {X_2}")
         X_3 = dendritic_layer(X_2, dendrite_weights, dendrites, Output_features, Den_view)
-        print(["X_3", X_3])
-       # sys.exit()
-        #  dendritic_layer(input_set, weights, dendrites, output_features, Den_view, batch_size=None, bias=None)
+        # dendritic_layer(input_set, weights, dendrites, output_features, Den_view, batch_size=None, bias=None)
         # Convert to One-hot target
-        target = [0, 0, 0]
+        target = [0, 0, 0, 0, 0, 
+                  0, 0, 0, 0, 0]
         target[int(train_y[idx])] = 1
-
-        # Cost function, Square Root Eror
-        eror = 0
-        for i in range(3):
-            eror += 0.5 * (target[i] - X_3[i]) ** 2
-        cost_total += eror
-
+        
+        # Cost function, Square Root Error
+        error = 0
+        for i in range(10):
+            error += 0.5 * (target[i] - X_3[i]) ** 2
+        cost_total += error
+        
         # Backward propagation
         # Update weight_2 and bias_2 (layer 2)
         delta_3: List[int] = []
         for j in range(Output_features):
             delta_3.append(-1 * (target[j] - X_3[j]) * X_3[j] * (1 - X_3[j]))
-
+        
         for i in range(Output_features):
             for j in range(dendrites):
                 for k in range(Den_view):
                      
                     dendrite_weights[i][j][k] -= alfa * (delta_3[i] * (X_2[k]+X_2[k+1])/2) # Averaging the outputs from X_2 to fit to dendritic_layer
                     # bias_2[j] -= alfa * delta_3[j]
-
+        
         # TODO: Fix the line below here. I should make sure it's a good calculation.
         # Also resize dendrite_weights for mult
         #print(["dendrite_weights[0:3]:", dendrite_weights[0:3], "dendrite_weights[0:3].shape:", dendrite_weights[0:3].shape])
         #print(["delta_3:", delta_3, "delta_3.shape:", len(delta_3)])
-        delta_2 = mat_vec(np.reshape(dendrite_weights[0:3], [6, 3]), delta_3)
+        delta_2 = mat_vec(np.reshape(dendrite_weights[0:10], [10, 10]), delta_3)
         #print(["delta_2", delta_2])
         #print(["X_2", X_2])
         for i in range(neuron[1]):
@@ -246,7 +236,6 @@ for e in range(epoch):
                 bias[j] -= alfa * delta_1[j]
 
     cost_total /= len(train_X)
-    cost_for_graph.append(cost_total)
     interval = 50
     if (e % interval == 0):
         print("Epoch ", e/interval, " out of ", epoch/interval)
@@ -254,27 +243,6 @@ for e in range(epoch):
 
         f.write("Epoch " + str(e/interval) + " out of " + str(epoch/interval) + "\n")
         f.write("Epoch cost: %.5f \n" % cost_total)
-
-cost_for_graph = np.array(cost_for_graph)
-print(["cost_for_graph.shape: ", cost_for_graph.shape])
-# Plot error over time
-x_axis = np.arange(epoch)
-#for i in range(epoch):
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
-ax.plot(x_axis, cost_for_graph, 'r')
-# axis(xmin, xmax, ymin, ymax)
-plt.axis([0, epoch, 0, 0.40])
-plt.xlabel('Training iteration')
-plt.ylabel('Error')
-ax.set_title('Dendritic Network\n'
-             ' (learning rate: %(val1).4f, Epochs: %(val2)d)'
-             % {'val1': alfa, 'val2': epoch})
-plt.show()
-
-
-
-
 
 """
 SECTION 3 : Testing
@@ -302,3 +270,4 @@ for i in range(len(preds)):
         acc += 1
 print("Network Accuracy: ", acc / len(preds) * 100, "%")
 f.write("Network Accuracy: " + str(acc / len(preds) * 100) + "%")
+

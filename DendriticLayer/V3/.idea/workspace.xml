@@ -2,13 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="45f4dc76-e06e-47db-bc77-b1ddb29c96c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../V2/.idea/libraries/R_User_Library.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../V2/.idea/V2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../V2/.idea/V2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../V2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../V2/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IRIS_trial7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Results/ trial2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Results/ trial3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Results/ trial4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Results/ trial5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Results/ trial6.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Results/trial1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Results/trial1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Results/trial7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WineQuality_Dendritic_net.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Wine_trial1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/trial7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/winequality-white.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/V3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/V3.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IRIS_Dendritic_Net.py" beforeDir="false" afterPath="$PROJECT_DIR$/IRIS_Dendritic_Net.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iris/.~lock.iris.csv#" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SparseVecs/SparseVecsV1.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../SparseVecs/SparseVecsV1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SparseVecs/sparsefuncs.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../SparseVecs/sparsefuncs.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,13 +31,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../revising_bp/Mark_Work/IrisNets/IRIS_Control_Net.py">
+        <entry file="file://$PROJECT_DIR$/../../../revising_bp/Mark_Work/LayerAllocation/MNIST/MNIST_Control_Net.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3000">
-              <caret line="154" selection-start-line="154" selection-end-line="154" />
-              <folding>
-                <element signature="e#348#358#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="3100">
+              <caret line="161" column="18" selection-start-line="161" selection-start-column="18" selection-end-line="161" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -33,35 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/IRIS_Dendritic_Net.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="190" lean-forward="true" selection-start-line="190" selection-end-line="190" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file:///usr/lib/python3.7/codecs.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="309" selection-start-line="309" selection-end-line="309" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="1734" selection-start-line="1734" selection-end-line="1734" />
+            <state relative-caret-position="499">
+              <caret line="159" selection-start-line="159" selection-end-line="159" />
             </state>
           </provider>
         </entry>
@@ -90,13 +72,15 @@
         <option value="$PROJECT_DIR$/../V2/dendritic_layer_def.py" />
         <option value="$PROJECT_DIR$/../../../revising_bp/Mark_Work/IrisNets/IRIS_Control_Net.py" />
         <option value="$PROJECT_DIR$/IRIS_Dendritic_Net.py" />
+        <option value="$PROJECT_DIR$/../../../revising_bp/Mark_Work/LayerAllocation/MNIST/MNIST_Control_Net.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="682" />
-    <option name="width" value="684" />
-    <option name="height" value="768" />
+    <option name="x" value="690" />
+    <option name="y" value="5" />
+    <option name="width" value="676" />
+    <option name="height" value="764" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -109,11 +93,14 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../revising_bp/Mark_Work/LayerAllocation/MNIST/MNIST_Control_Net.py" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Results" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -203,9 +190,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="768" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.47679815" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.47651514" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -250,41 +236,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6160">
+          <caret line="309" selection-start-line="309" selection-end-line="309" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34680">
+          <caret line="1734" selection-start-line="1734" selection-end-line="1734" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../../revising_bp/Mark_Work/IrisNets/IRIS_Control_Net.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3000">
-          <caret line="154" selection-start-line="154" selection-end-line="154" />
+        <state relative-caret-position="186">
+          <caret line="92" lean-forward="true" selection-start-line="92" selection-end-line="92" />
           <folding>
             <element signature="e#348#358#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+    <entry file="file://$PROJECT_DIR$/../../../revising_bp/Mark_Work/LayerAllocation/MNIST/MNIST_Control_Net.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="1734" selection-start-line="1734" selection-end-line="1734" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python3.7/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="309" selection-start-line="309" selection-end-line="309" />
+        <state relative-caret-position="3100">
+          <caret line="161" column="18" selection-start-line="161" selection-start-column="18" selection-end-line="161" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/IRIS_Dendritic_Net.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="190" lean-forward="true" selection-start-line="190" selection-end-line="190" />
+        <state relative-caret-position="499">
+          <caret line="159" selection-start-line="159" selection-end-line="159" />
         </state>
       </provider>
     </entry>

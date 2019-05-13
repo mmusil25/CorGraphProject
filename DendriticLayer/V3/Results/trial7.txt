@@ -1,0 +1,24 @@
+ alfa: 0.0400, epoch: 400 
+ neuron[0]: 4, neuron[1]: 6, neuron[2]: 6 
+ Dendritic layer dimensions (in order) 
+: Output_features: 3, dendrites: 2, Den_view: 3 
+###### Begin Training Output ###### 
+Epoch 0.0 out of 8.0
+Epoch cost: 0.39854 
+Epoch 1.0 out of 8.0
+Epoch cost: 0.38378 
+Epoch 2.0 out of 8.0
+Epoch cost: 0.38378 
+Epoch 3.0 out of 8.0
+Epoch cost: 0.38378 
+Epoch 4.0 out of 8.0
+Epoch cost: 0.38378 
+Epoch 5.0 out of 8.0
+Epoch cost: 0.38378 
+Epoch 6.0 out of 8.0
+Epoch cost: 0.38378 
+Epoch 7.0 out of 8.0
+Epoch cost: 0.38378 
+Predictions: 
+[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ] 
+Network Accuracy: 30.0%

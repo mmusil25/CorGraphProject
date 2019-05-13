@@ -1,0 +1,5 @@
+ alpha: 0.0100, epoch: 1 
+ neuron[0]: 4, neuron[1]: 6, neuron[2]: 6 
+ Dendritic layer dimensions (in order) 
+: Output_features: 3, dendrites: 2, Den_view: 3 
+###### Begin Training Output ###### 

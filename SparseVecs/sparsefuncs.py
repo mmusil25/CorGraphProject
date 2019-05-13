@@ -10,8 +10,8 @@ import csv
 #------Function supporting manual entry of an adjacency matrix------
 def manualinput(vertices):  
     print("Your adjacency matrix must have " + str(vertices) + " rows and columns when entered\n")
-    ADJ=[]
-    row=[]
+    ADJ = []
+    row = []
     for i in range(vertices):
         row.append(0)
     for k in range(vertices):
@@ -38,7 +38,7 @@ def genList(sparse, width):
 #-------------Function for getting input from a file--------------
 
 def inputFromFile(vertices, delimit=' '):
-    inputFileName = raw_input('Enter the name of your input file with no spaces and without the .csv extension.\n')
+    inputFileName = input('Enter the name of your input file with no spaces and without the .csv extension.\n')
     inputFileName = inputFileName + '.csv'		
     with open(inputFileName, 'rb') as csvfile:
         matreader = csv.reader(csvfile, delimiter=',',quotechar='|')
