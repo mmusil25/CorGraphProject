@@ -1,9 +1,11 @@
- In this work two neural inspired
+## Cortical Vision
+
+In this work two neural inspired
 algorithms are combined. A
-convolutional neural network (CNN)
+convolutional neural network
 which performs well on image
 recognition tasks and Numenta's spatial
-pooler(SP)[3] which is an unsupervised
+pooler which is an unsupervised
 algorithm meant to capture statistical
 information in the same way as the
 neocortex. The goal is to demonstrate
